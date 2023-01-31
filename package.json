@@ -6,16 +6,18 @@
 		"dev": "vite",
 		"build": "run-p type-check build-only",
 		"preview": "vite preview",
-		"test:unit": "vitest --environment jsdom --root src/ --reporter verbose",
+		"test:unit": "vitest --environment jsdom --root src/ --reporter verbose --globals",
 		"build-only": "vite build",
 		"type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
 	},
 	"dependencies": {
 		"@vueuse/core": "^9.11.1",
+		"firebase": "^9.16.0",
 		"normalize.css": "^8.0.1",
 		"pinia": "^2.0.28",
 		"vue": "^3.2.45",
-		"vue-router": "^4.1.6"
+		"vue-router": "^4.1.6",
+		"vuefire": "^3.0.1"
 	},
 	"devDependencies": {
 		"@testing-library/vue": "^6.6.1",
