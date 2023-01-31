@@ -3,7 +3,6 @@ import MainLayout from '@/layouts/Main.vue'
 import Home from '@/views/Home.vue'
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
-import Lobby from '@/views/Lobby.vue'
 import { useAuth } from '@/composables/auth'
 
 const router = createRouter({
@@ -26,13 +25,7 @@ const router = createRouter({
 			name: 'SignUp',
 			component: SignUp,
 			meta: { layout: MainLayout },
-		},
-		{
-			path: '/Lobby',
-			name: 'Lobby',
-			component: Lobby,
-			meta: { layout: MainLayout },
-		},
+		}
 	],
 })
 

@@ -5,10 +5,11 @@ import { useUser } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
+import Lobby from '@/components/Lobby.vue';
 
 const router = useRouter()
 const userStore = useUser()
-const { user, inTheRoom, isLoaded } = storeToRefs(userStore)
+const { user, inTheRoom, isLoaded, isWaiting } = storeToRefs(userStore)
 
 function signOut() {
 	location.reload()
@@ -26,18 +27,19 @@ onBeforeMount(async () => {
 
 
 	<div v-if="isLoaded">
-	
-		Username: {{ user?.username }} 
-		<button @click="signOut" style="float: right"> Sign out </button>
-		<div v-if="!inTheRoom" class="home">
-			<RouterLink to="/Lobby"> Lobby </RouterLink>
+
+
+		<!-- <Room v-if="inTheRoom" />-->
+		<div v-if="inTheRoom">
+			In The Room
 		</div>
 
-		<template v-else>
-			Room component
+		<Lobby v-else-if="isWaiting" />
 
-			<button @click="userStore.leaveRoom"> Leave room </button>
-		</template>
+		<div v-else>
+			Username: {{ user?.username }} 
+			<button @click="signOut" style="float: right"> Sign out </button>
+		</div>
 		
 	</div>
 
