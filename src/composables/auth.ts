@@ -6,20 +6,23 @@ export function useAuth() {
     const auth = useFirebaseAuth() as Auth
     const { add: addUser } = useUser()
 
-    const signUpWithGoogle = async (
+    const isLogin = async () => await getCurrentUser() ? true : false;
+
+    const signInWithGoogle = async () => {
+        const provider = new GoogleAuthProvider()
+        const result = await signInWithPopup(auth, provider)
+            .catch(err => console.log(err))
+        if (result) { return result.user }
+    }
+
+    const signUp = async (
         languages: string[],
         username?: string,
         bio?: string
     ) => {
-        if (!languages.length) {
-            throw new Error('At least one language is required')
-        }
-        const result = await signInWithGoogle()
-        if (!result) { 
-            throw new Error('Failed to sign in with Google')
-        }
-        const { user } = result;
-        return await addUser(user.uid, {
+        if (!languages.length) throw new Error('At least one language')
+        const user = await signInWithGoogle()
+        if (user) await addUser(user.uid, {
             username: username || user.displayName || 'listener',
             email: user.email!,
             languages: languages,
@@ -30,22 +33,12 @@ export function useAuth() {
         })
     }
 
-    const signInWithGoogle = async () => {
-        const provider = new GoogleAuthProvider()
-        return signInWithPopup(auth, provider).catch(err => { alert(err.code) })
-    }
-
-    const isLogin = async () => {
-        const user = await getCurrentUser()
-        return user ? true : false
-    }
-
     const signOut = () => auth.signOut()
 
     return {
+        signUp,
         isLogin,
         signInWithGoogle,
-        signUpWithGoogle,
         signOut
     }
 }

@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layouts/Main.vue'
 import Home from '@/views/Home.vue'
-import Login from '@/views/Login.vue'
+import SignIn from '@/views/SignIn.vue'
+import SignUp from '@/views/SignUp.vue'
 import Lobby from '@/views/Lobby.vue'
 import { useAuth } from '@/composables/auth'
-import { useUser } from '@/stores/user'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,9 +16,15 @@ const router = createRouter({
 			meta: { layout: MainLayout }
 		},
 		{
-			path: '/login',
-			name: 'Login',
-			component: Login,
+			path: '/signin',
+			name: 'SignIn',
+			component: SignIn,
+			meta: { layout: MainLayout },
+		},
+		{
+			path: '/signup',
+			name: 'SignUp',
+			component: SignUp,
 			meta: { layout: MainLayout },
 		},
 		{
@@ -33,15 +39,13 @@ const router = createRouter({
 
 router.beforeEach(async to => {
 	const { isLogin } = useAuth()
-	const userStore = useUser()
 
-	if (!await isLogin() && to.name !== 'Login') {
-		return { name: 'Login' }
-	}
+	if (
+		!await isLogin() 
+		&& to.name !== 'SignUp' 
+		&& to.name !== 'SignIn'
+	) { return { name: 'SignUp' } }
 
-	if (userStore.currentRoom && to.name !== 'home') { // se la currentRoom è attiva, rendirizza l'utente alla home
-		return { name: 'home' }
-	}
 })
 
 

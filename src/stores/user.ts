@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { useDocument, useCollection, useFirestore, getCurrentUser } from "vuefire"
-import { collection, doc, setDoc, updateDoc, deleteDoc } from "firebase/firestore"
+import { collection, doc, setDoc, updateDoc, deleteDoc, getDoc } from "firebase/firestore"
 import { ref, computed } from "vue"
 import type { DocumentData } from 'firebase/firestore'
 
@@ -25,9 +25,14 @@ export const useUser = defineStore('user', () => {
     const token = ref('')
 
     const load = async () => {
+        if (isLoaded.value) return
         const _user = await getCurrentUser()
+        
         if (!_user) throw new Error('Failed to load user')
-        const userRef = doc(collection(db, 'users'), _user.uid)
+        const userRef = doc(db, 'users', _user.uid)
+        const userSnap = await getDoc(userRef)
+
+        if (!userSnap.exists()) throw new Error('User not registered')
         await useDocument(userRef, { target: user }).promise.value
         token.value = await _user.getIdToken()
     }

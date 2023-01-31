@@ -3,7 +3,10 @@
 import { useAuth } from '@/composables/auth';
 import { useUser } from '@/stores/user';
 import { storeToRefs } from 'pinia';
+import { onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const userStore = useUser()
 const { user, inTheRoom, isLoaded } = storeToRefs(userStore)
 
@@ -12,9 +15,15 @@ function signOut() {
 	useAuth().signOut()
 }
 
+onBeforeMount(async () => {
+	try {  await userStore.load() }
+	catch { router.push('/signup') }
+})
+
 </script>
 
 <template>
+
 
 	<div v-if="isLoaded">
 	
