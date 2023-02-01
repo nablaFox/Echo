@@ -27,9 +27,7 @@ export function useAuth() {
             email: user.email!,
             languages: languages,
             bio: bio || 'Silence is a true friend who never betrays',
-            group: 2,
-            currentRoom: null,
-            isWaiting: false
+            group: 2
         })
     }
 

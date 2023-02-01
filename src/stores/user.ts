@@ -9,18 +9,17 @@ interface IUserData {
     bio: string,
     email: string,
     languages?: string[],
-    currentRoom: null,
-    group: 2,
-    isWaiting: false
+    group: 2
 }
 
 export const useUser = defineStore('user', () => {
     const db = useFirestore()
     const user = ref<DocumentData>()
+    const roomInfo = ref<DocumentData>()
     const isLoaded = computed(() => user.value !== undefined)
-    const currentRoom = computed<DocumentData>(() => user.value?.currentRoom ?? null)
+    const currentRoom = computed<DocumentData>(() => roomInfo.value?.currentRoom ?? null)
     const inTheRoom = computed(() => currentRoom.value !== null)
-    const isWaiting = computed(() => user.value?.isWaiting as boolean)
+    const isWaiting = computed(() => roomInfo.value?.isWaiting as boolean)
     const exRooms = ref([])
     const token = ref('')
 
@@ -30,10 +29,13 @@ export const useUser = defineStore('user', () => {
         
         if (!_user) throw new Error('Failed to load user')
         const userRef = doc(db, 'users', _user.uid)
+        const roomInfoRef = doc(db, 'users', _user.uid, 'locked', 'roomInfo')
         const userSnap = await getDoc(userRef)
 
         if (!userSnap.exists()) throw new Error('User not registered')
+        await useDocument(roomInfoRef, { target: roomInfo }).promise.value
         await useDocument(userRef, { target: user }).promise.value
+
         token.value = await _user.getIdToken()
     }
 
@@ -79,8 +81,12 @@ export const useUser = defineStore('user', () => {
         })
     }
 
+
+    const changeMod = async () => {}
+
     return {
         user,
+        roomInfo,
         isLoaded,
         currentRoom,
         inTheRoom,
@@ -92,6 +98,7 @@ export const useUser = defineStore('user', () => {
         remove,
         loadExRooms,
         searchRoom,
-        leaveRoom
+        leaveRoom,
+        changeMod
     }
 })
