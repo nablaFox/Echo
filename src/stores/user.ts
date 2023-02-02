@@ -36,7 +36,7 @@ export const useUser = defineStore('user', () => {
         await useDocument(roomInfoRef, { target: roomInfo }).promise.value
         await useDocument(userRef, { target: user }).promise.value
 
-        token.value = await _user.getIdToken()
+        token.value = await _user.getIdToken(true)
     }
 
     const add = async (uid: string, userData: IUserData) => {
@@ -46,12 +46,12 @@ export const useUser = defineStore('user', () => {
     }
 
     const update = async (userData: DocumentData) => {
-        const userRef = doc(db, 'users', user.value!.id)
+        const userRef = doc(db, 'users', user.value?.id)
         await updateDoc(userRef, userData)
     }
 
     const remove = async () => {
-        const userRef = doc(db, 'users', user.value!.id)
+        const userRef = doc(db, 'users', user.value?.id)
         await deleteDoc(userRef)
         await (await getCurrentUser())!.delete()
     }
@@ -81,9 +81,6 @@ export const useUser = defineStore('user', () => {
         })
     }
 
-
-    const changeMod = async () => {}
-
     return {
         user,
         roomInfo,
@@ -99,6 +96,5 @@ export const useUser = defineStore('user', () => {
         loadExRooms,
         searchRoom,
         leaveRoom,
-        changeMod
     }
 })

@@ -20,3 +20,8 @@ body {
 }
 
 h1 { @extend %headline-large }
+h2 { @extend %title-large }
+
+* {
+    box-sizing: border-box;
+}
