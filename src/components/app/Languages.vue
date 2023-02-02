@@ -75,10 +75,13 @@ function changeLang(event: any, iso: string) {
 </template>
 
 
-<style scoped>
+<style scoped lang="scss">
 :deep(.body) {
     max-height: 210px;
     overflow: scroll;
     scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none
+    }
 }
 </style>
