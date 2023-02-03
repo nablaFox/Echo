@@ -11,6 +11,7 @@
 		"type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
 	},
 	"dependencies": {
+		"@splidejs/vue-splide": "^0.6.12",
 		"@vueuse/core": "^9.11.1",
 		"firebase": "^9.16.0",
 		"normalize.css": "^8.0.1",
