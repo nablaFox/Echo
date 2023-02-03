@@ -43,6 +43,7 @@ const changeMod = (mod: number) => userStore.update({ group: mod })
     height: 80px;
     border-radius: $medium-rounded;
     background-color: var(--md-sys-color-surface2);
+    @include maxHSize(719px) { height: 70px }
 }
 
 :deep(.body) {
@@ -51,7 +52,7 @@ const changeMod = (mod: number) => userStore.update({ group: mod })
 }
 
 :deep(.dialog) {
-    width: 200px;
+    width: 200px; // temporany
 }
 
 :deep(.content) {

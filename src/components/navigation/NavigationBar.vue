@@ -27,7 +27,6 @@ const selected = ref(0)
 
 
 <style lang="scss">
-
 .bottom-app-bar {
 	@include pos($b: 0, $l: 0);
 	position: fixed;
@@ -37,6 +36,6 @@ const selected = ref(0)
 	z-index: 9995;
 	background-color: var(--md-sys-color-surface2);
 	gap: 40px;
+	@include maxHSize(719px) { height: 48px }
 }
-
 </style>

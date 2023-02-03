@@ -17,9 +17,11 @@
 	@include flex($justify: space-between);
 	border-radius: 8px;
 	padding: 0 10px;
-	min-height: 56px;
+	height: 56px;
 	margin-top: 10px;
 	user-select: none;
+	@include maxHSize(719px) { height: 44.8px };
+	line-height: 0;
 }
 
 .product {

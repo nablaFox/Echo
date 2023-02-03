@@ -40,6 +40,8 @@ function format(n: number) {
     padding: 0 20px;
     height: 77px;
     user-select: none;
+
+    @include maxHSize(719px) { height: 61.6px; }
 }
 
 .group { @include flex($direction: column) }

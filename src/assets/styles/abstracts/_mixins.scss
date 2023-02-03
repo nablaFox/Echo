@@ -27,10 +27,18 @@
     height: 100%;
 }
 
-@mixin minSize($breakpoint) {
+@mixin minWSize($breakpoint) {
     @media screen and (min-width: #{$breakpoint}) { @content }
 };
 
-@mixin maxSize($breakpoint) {
+@mixin maxWSize($breakpoint) {
     @media screen and (max-width: #{$breakpoint}) { @content }
+};
+
+@mixin minHSize($breakpoint) {
+    @media screen and (min-height: #{$breakpoint}) { @content }
+};
+
+@mixin maxHSize($breakpoint) {
+    @media screen and (max-height: #{$breakpoint}) { @content }
 }

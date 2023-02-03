@@ -77,11 +77,9 @@ function changeLang(event: any, iso: string) {
 
 <style scoped lang="scss">
 :deep(.body) {
-    max-height: 210px;
+    max-height: 23vh;
     overflow: scroll;
     scrollbar-width: none;
-    &::-webkit-scrollbar {
-        display: none
-    }
+    &::-webkit-scrollbar { display: none }
 }
 </style>

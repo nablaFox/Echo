@@ -18,16 +18,18 @@ import Modes from './Modes.vue'
 </template>
 
 <style scoped lang="scss">
-
 .option-bar {
     @include flex($direction: column, $justify: space-between);
     display: inline-flex;
-    background-color: var(--md-sys-color-surface5);
+    background-color: var(--md-sys-color-surface1);
+    box-shadow: var(--md-sys-elevation2);
     border-radius: $small-rounded;
     height: 265px;
     width: 42px;
     padding: 12px 0px;
     user-select: none;
-}
 
+    @include maxHSize(719px) { height: 212px }
+
+}
 </style>

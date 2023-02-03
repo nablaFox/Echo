@@ -100,7 +100,7 @@ defineExpose({ open, close })
 
 .dialog {
     border-radius: $extra-large-rounded;
-    width: 280px;
+    width: 70vw; // temporany
     background-color: var(--md-sys-color-surface);
     box-shadow: var(--md-sys-elevation2);
     padding: 24px;

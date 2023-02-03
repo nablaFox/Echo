@@ -24,4 +24,5 @@ h2 { @extend %title-large }
 
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
