@@ -18,11 +18,12 @@
 .recents {
 	border-top: 1px solid var(--md-sys-color-outline-variant);
 	border-bottom: 1px solid var(--md-sys-color-outline-variant);
-	padding: 15px 20px;
+	padding: 18px 20px;
 	@include flex($justify: start);
 	width: 100%;
 	gap: 20px;
-	@include maxHSize(719px) { padding: 10px }
+	@include maxHSize(719px) { padding: 13px 20px; }
+    overflow: hidden;
 }
 
 .recent {
@@ -33,7 +34,6 @@
     @extend %label-medium;
     height: 40px;
     padding: 0 10px;
-
     @include maxHSize(719px) { height: 32px }
 }
 

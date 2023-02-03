@@ -3,11 +3,12 @@
 import { useUser } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
-import Lobby from '@/components/Lobby.vue'
-import MainButton from '@/components/app/MainButton.vue'
-import OptionBar from '@/components/app/OptionBar.vue'
-import UserInfo from '@/components/app/UserInfo.vue'
-import Recents from '@/components/app/Recents.vue'
+import Room from '@/components/app/Room.vue'
+import Lobby from '@/components/app/Lobby.vue'
+import MainButton from '@/components/home/MainButton.vue'
+import OptionBar from '@/components/home/OptionBar.vue'
+import UserInfo from '@/components/home/UserInfo.vue'
+import Recents from '@/components/home/Recents.vue'
 
 const userStore = useUser()
 const { inTheRoom, isWaiting, roomInfo, user } = storeToRefs(userStore)
@@ -16,11 +17,7 @@ const { inTheRoom, isWaiting, roomInfo, user } = storeToRefs(userStore)
 
 <template>
 
-	<div v-if="inTheRoom" > 
-		in the room
-		<button @click="userStore.leaveRoom"> Leave room </button> 
-		
-	</div>
+	<Room v-if="inTheRoom" />
 
 	<Lobby v-else-if="isWaiting" />
 
@@ -61,18 +58,18 @@ const { inTheRoom, isWaiting, roomInfo, user } = storeToRefs(userStore)
 }
 
 .functions {
-	flex: 60%;
+	flex: 56%;
 	@include flex();
 	gap: 40px;
 }
 
 .info-wrapper {
-	flex: 18%;
+	flex: 20%;
 	padding: 0 15px;
 }
 
 .recents-wrapper { 
-	flex: 22%;
+	flex: 24%;
 	display: flex;
 	flex-direction: column;
 }
