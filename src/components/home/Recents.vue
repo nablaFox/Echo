@@ -22,7 +22,7 @@ import '@splidejs/vue-splide/css/core'
             v-for="n in 10"
         >
             <div class="recent">
-                <span class="name"> Room </span>
+                <span class="name"> New Room </span>
                 <span class="time"> #34h </span>
             </div>
         </SplideSlide>
@@ -31,7 +31,6 @@ import '@splidejs/vue-splide/css/core'
 </template>
 
 <style lang="scss" scoped>
-
 .splide {
     border-top: 1px solid var(--md-sys-color-outline-variant);
 	border-bottom: 1px solid var(--md-sys-color-outline-variant);
@@ -51,5 +50,4 @@ import '@splidejs/vue-splide/css/core'
 }
 
 .time { color: var(--md-sys-color-primary) }
-
 </style>

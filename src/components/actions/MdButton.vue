@@ -2,10 +2,10 @@
 import { computed } from 'vue'
 
 export interface Props {
-    as?: string,
-    variant?: string,
-    label?: string,
-    icon?: string,
+    as?: string
+    variant?: string
+    label?: string
+    icon?: string
     href?: string
 }
 
