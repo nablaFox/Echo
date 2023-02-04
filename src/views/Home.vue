@@ -1,35 +1,36 @@
 <script setup lang="ts">
-
 import { useUser } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
-import Room from '@/components/app/Room.vue'
-import Lobby from '@/components/app/Lobby.vue'
 import MainButton from '@/components/home/MainButton.vue'
 import OptionBar from '@/components/home/OptionBar.vue'
 import UserInfo from '@/components/home/UserInfo.vue'
 import Recents from '@/components/home/Recents.vue'
+import { useRouter } from 'vue-router'
 
 const userStore = useUser()
-const { inTheRoom, isWaiting, roomInfo, user } = storeToRefs(userStore)
+const router = useRouter()
+const { roomInfo } = storeToRefs(userStore)
+
+async function onMainClick() {
+	const result = await userStore.searchRoom()
+	if (result) router.push('/lobby')
+	else { } // do something
+}
 
 </script>
 
 <template>
 
-	<Room v-if="inTheRoom" />
-
-	<Lobby v-else-if="isWaiting" />
-
-	<main class="home" v-else>
+	<main class="home">
 		<div class="functions">
-			<MainButton />
+			<MainButton @click="onMainClick"/>
 			<OptionBar />
 		</div>
 
 		<div class="info-wrapper">
 			<UserInfo 
-				:hours="roomInfo?.totalHours || 0"
+				:hours="roomInfo?.totalHours?.toFixed(1) || 0"
 				:peoples="roomInfo?.totalPeoples || 0"
 				:rooms="roomInfo?.totalRooms || 0"
 			/>
@@ -41,19 +42,18 @@ const { inTheRoom, isWaiting, roomInfo, user } = storeToRefs(userStore)
 				<Recents />
 			</div>
 		</div>
+
 	</main>
 
 </template>
 
 
 <style lang="scss" scoped>
-
 .home {
 	height: calc(100vh - 66px - 60px);
 	width: 100%;
 	@include flex($direction: column, $justify: start);
 	& > * { width: 100%; }
-
 	@include maxHSize(719px) { height: calc(100vh - 54.8px - 48px) }
 }
 
@@ -72,6 +72,13 @@ const { inTheRoom, isWaiting, roomInfo, user } = storeToRefs(userStore)
 	flex: 24%;
 	display: flex;
 	flex-direction: column;
+	&__title { 
+		@extend %title-large;
+		@include maxHSize(650px) {  
+			font-weight: 500;
+    		font-size: 18px
+		}
+	}
 }
 
 .recents-container { 
@@ -79,5 +86,4 @@ const { inTheRoom, isWaiting, roomInfo, user } = storeToRefs(userStore)
 	@include flex();
 	padding-bottom: 10px;
 }
-
 </style>

@@ -1,4 +1,3 @@
 <template>
-
-    In The Room
+    <slot />
 </template>

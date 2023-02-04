@@ -17,3 +17,13 @@ h4,
 h5 {
     margin: 0;
 }
+
+input[type="text"],
+input[type="password"],
+textarea {
+    outline: none;
+    background-color: unset;
+    border: none;
+    color: inherit;
+    width: 100%;
+}

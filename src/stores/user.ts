@@ -18,7 +18,7 @@ export const useUser = defineStore('user', () => {
     const roomInfo = ref<DocumentData>()
     const isLoaded = computed(() => user.value !== undefined)
     const currentRoom = computed<DocumentData>(() => roomInfo.value?.currentRoom ?? null)
-    const inTheRoom = computed(() => currentRoom.value !== null)
+    const inTheRoom = computed(() => currentRoom.value !== null && currentRoom.value.id !== undefined)
     const isWaiting = computed(() => roomInfo.value?.isWaiting as boolean)
     const exRooms = ref([])
     const token = ref('')
@@ -62,23 +62,25 @@ export const useUser = defineStore('user', () => {
     }
 
     const searchRoom = async () => {
-        fetch('http://localhost:3000/rooms/waitingRoom', {
+        const result = await fetch('http://localhost:3000/rooms/waitingRoom', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token.value,
             }
         })
+        if (result.ok) return result
     }
 
     const leaveRoom = async () => {
-        fetch(`http://localhost:3000/rooms/${currentRoom.value.id}`, {
+        const result = await fetch(`http://localhost:3000/rooms/${currentRoom.value.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': token.value,
             }
         })
+        if (result.ok) return result
     }
 
     return {

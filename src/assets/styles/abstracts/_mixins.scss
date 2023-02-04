@@ -27,6 +27,11 @@
     height: 100%;
 }
 
+@mixin hide-scrollbar() {
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none }
+}
+
 @mixin minWSize($breakpoint) {
     @media screen and (min-width: #{$breakpoint}) { @content }
 };

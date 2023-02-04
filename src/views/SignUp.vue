@@ -7,7 +7,7 @@ const router = useRouter()
 const { signUp } = useAuth()
 
 async function onClick() {
-    await signUp(['it'])
+    await signUp(['IT'])
     router.push('/')
 }
 
