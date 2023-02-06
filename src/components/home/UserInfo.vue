@@ -7,13 +7,15 @@ const props = defineProps<{
     rooms: number
 }>()
 
-function format(n: number) {
-    if (n >= 1000) {
-        return (n / 1000).toFixed(1).toString() + 'k'
-    } else return n
+const parseHours = (n: number) => parseFloat((n / 3600000).toFixed(1))
+
+function format(n: number, name: string) {
+    const formatted = name === 'hours' ? parseHours(n) : n
+    if (formatted >= 1000) {
+        return (formatted / 1000).toFixed(1).toString() + 'k'
+    } else return formatted
 }
 </script>
-
 
 
 <template>
@@ -22,9 +24,9 @@ function format(n: number) {
         <ToolTip 
             class="group"
             v-for="data, name in props"
-            :tip="data"
+            :tip="name === 'hours' ? parseHours(data) : data"
         >
-            <div class="data"> {{ format(data) }} </div>
+            <div class="data"> {{ format(data, name) }} </div>
             <div class="info"> {{ name }}</div>
         </ToolTip>
     </div>

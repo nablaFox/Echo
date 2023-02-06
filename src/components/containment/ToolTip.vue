@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 import { ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 
@@ -9,7 +8,6 @@ const target = ref<HTMLInputElement | null>(null)
 const active = ref(false)
 
 onClickOutside(target, () => (active.value = false))
-
 </script>
 
 <template>
@@ -33,7 +31,6 @@ onClickOutside(target, () => (active.value = false))
 
 
 <style lang="scss" scoped>
-
 .tip {
     @include flex();
     display: inline-flex;
@@ -45,6 +42,9 @@ onClickOutside(target, () => (active.value = false))
     z-index: 1;
     @extend %label-medium;
     bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
 
     &::after {
         content: "";
@@ -59,7 +59,7 @@ onClickOutside(target, () => (active.value = false))
     }
 }
 
-.tool-tip { position: relative }
+.tool-tip { position: relative; }
 
 .v-enter-active,
 .v-leave-active {
@@ -70,5 +70,4 @@ onClickOutside(target, () => (active.value = false))
 .v-leave-to {
     opacity: 0;
 }
-
 </style>
