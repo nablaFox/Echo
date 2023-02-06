@@ -1,32 +1,35 @@
 <script setup lang="ts">
-import { useRoom } from '@/stores/room'
-import { storeToRefs } from 'pinia'
+import { useRoom } from '@/composables/room'
 
 import RoomHeader from '@/components/room/RoomHeader.vue'
 import Controls from '@/components/room/Controls.vue'
 import Message from '@/components/room/Message.vue'
-import { onMounted } from 'vue'
 import { useUser } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps<{ id: string }>()
 
 const userStore = useUser()
-const roomStore = useRoom()
-
 const { user } = storeToRefs(userStore)
-const { messages, messagesLimit } = storeToRefs(roomStore)
+const { data, messages, sendMessage, info, loaded } = useRoom(props.id)
 
-const onSend = (text: string) => roomStore.sendMessage(text, user.value?.id)
-onMounted(() => roomStore.loadMessages(props.id))
+const onSend = (text: string) => sendMessage(text, user.value?.id)
+
 
 </script>
 
 <template>
 
-    <div class="room">
-        <RoomHeader room-name="New Room" @click="userStore.leaveRoom"/>
+    <!-- Transition -->
+    <div class="room" v-if="loaded">
+        <RoomHeader
+            :since="info.since.toDate()"
+            :exit="!info.open"
+            :room-name="data?.name"
+            :total-time="info?.totalTime"
+        />
 
-        <div class="message-wrapper" v-if="messages">
+        <div class="message-wrapper">
             <Message
                 v-for="msg in messages"
                 :origin="user?.id === msg.sender ? 'sender' : 'recipient'"
@@ -36,10 +39,6 @@ onMounted(() => roomStore.loadMessages(props.id))
             />
         </div>
 
-        <div class="banner" v-else>
-            nice banner
-        </div>
-
         <Controls @send="onSend"/>
     </div>
   
@@ -47,7 +46,6 @@ onMounted(() => roomStore.loadMessages(props.id))
 
 
 <style lang="scss" scoped>
-
 .room {
     width: 100%;
     height: 100vh;
@@ -61,7 +59,7 @@ onMounted(() => roomStore.loadMessages(props.id))
     gap: 4px;
     padding: 0 8px;
     width: 100%;
-    padding-top: $room-header-height;
+    padding-top: 70px;
     @include hide-scrollbar()
 }
 
