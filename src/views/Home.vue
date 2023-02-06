@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router'
 
 const userStore = useUser()
 const router = useRouter()
-const { roomInfo } = storeToRefs(userStore)
+const { roomInfo, exRooms } = storeToRefs(userStore)
 
 async function onMainClick() {
 	const result = await userStore.searchRoom()
@@ -29,8 +29,8 @@ async function onMainClick() {
 		</div>
 
 		<div class="info-wrapper">
-			<UserInfo 
-				:hours="roomInfo?.totalHours?.toFixed(1) || 0"
+			<UserInfo
+				:hours="roomInfo?.totalTime || 0"
 				:peoples="roomInfo?.totalPeoples || 0"
 				:rooms="roomInfo?.totalRooms || 0"
 			/>
@@ -39,7 +39,7 @@ async function onMainClick() {
 		<div class="recents-wrapper">
 			<h2 class="title"> Recents </h2>
 			<div class="recents-container">
-				<Recents />
+				<Recents :rooms="exRooms"/>
 			</div>
 		</div>
 

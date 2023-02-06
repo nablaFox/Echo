@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { useDocument, useCollection, useFirestore, getCurrentUser } from "vuefire"
-import { collection, doc, setDoc, updateDoc, deleteDoc, getDoc } from "firebase/firestore"
+import { collection, doc, setDoc, updateDoc, deleteDoc, getDoc, query, orderBy, limit } from "firebase/firestore"
 import { ref, computed } from "vue"
 import type { DocumentData } from 'firebase/firestore'
 
@@ -21,6 +21,7 @@ export const useUser = defineStore('user', () => {
     const inTheRoom = computed(() => currentRoom.value !== null && currentRoom.value.id !== undefined)
     const isWaiting = computed(() => roomInfo.value?.isWaiting as boolean)
     const exRooms = ref([])
+    const exRoomsLimit = ref(30)
     const token = ref('')
 
     const load = async () => {
@@ -35,7 +36,7 @@ export const useUser = defineStore('user', () => {
         if (!userSnap.exists()) throw new Error('User not registered')
         await useDocument(roomInfoRef, { target: roomInfo }).promise.value
         await useDocument(userRef, { target: user }).promise.value
-
+        await loadExRooms()
         token.value = await _user.getIdToken(true)
     }
 
@@ -58,8 +59,13 @@ export const useUser = defineStore('user', () => {
 
     const loadExRooms = async () => {
         const roomRefs = collection(db, `users/${user.value!.id}/exRooms`)
-        await useCollection(roomRefs, { target: exRooms }).promise.value
+        const _query = computed(
+            () => query(roomRefs, orderBy('addedAt'), limit(exRoomsLimit.value))
+        )
+        await useCollection(_query, { target: exRooms }).promise.value
     }
+
+    const loadMoreExRooms = (delta: number) => exRoomsLimit.value += delta
 
     const searchRoom = async () => {
         const result = await fetch('http://localhost:3000/rooms/waitingRoom', {
@@ -96,6 +102,7 @@ export const useUser = defineStore('user', () => {
         update,
         remove,
         loadExRooms,
+        loadMoreExRooms,
         searchRoom,
         leaveRoom,
     }

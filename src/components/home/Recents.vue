@@ -1,8 +1,15 @@
 <script setup lang="ts">
-
+import { useFormat } from '@/composables/format';
 import { Splide, SplideSlide } from '@splidejs/vue-splide'
 import '@splidejs/vue-splide/css/core'
+import { useRouter } from 'vue-router';
 
+defineProps<{ rooms: Array<any> }>()
+
+const format = useFormat()
+const router = useRouter()
+
+const openRoom = (id: string) => router.push(`/room/${id}`)
 </script>
 
 
@@ -19,11 +26,12 @@ import '@splidejs/vue-splide/css/core'
         aria-label="My Favorite Images"
     >
         <SplideSlide
-            v-for="n in 10"
+            v-for="room in rooms"
+            @click="openRoom(room.ref.id)"
         >
             <div class="recent">
-                <span class="name"> New Room </span>
-                <span class="time"> #34h </span>
+                <span class="name"> {{ room.ref.name }} </span>
+                <span class="time"> #{{ format.preview(room.ref.info.totalTime) }} </span>
             </div>
         </SplideSlide>
     </Splide>
