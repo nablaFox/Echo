@@ -5,8 +5,10 @@ import IconButton from '@/components/actions/IconButton.vue'
 const emit = defineEmits<{
     (e: 'send', msg: string): void
 }>()
+defineProps<{ disabled: boolean }>()
 
 const { textarea, input, triggerResize } = useTextareaAutosize()
+const disabledMsg = 'The room is closed'
 
 function send(e: Event) {
     e.preventDefault()
@@ -20,14 +22,17 @@ function send(e: Event) {
 
 <template>
 
-    <footer class="controls">
+    <footer 
+        class="controls"
+        :class="{ disabled: disabled }"
+    >
         <div class="content">
             <div class="textarea__wrapper">
                 <textarea
                     ref="textarea"
                     class="textarea"
                     rows="1"
-                    placeholder="Aa"
+                    :placeholder="disabled ? disabledMsg : 'Aa'"
                     :value="input"
                     @input="e => input = (e.target as HTMLInputElement).value"
                     @keydown.enter="send"
@@ -60,7 +65,6 @@ function send(e: Event) {
 
 
 <style lang="scss" scoped>
-
 .controls {
     width: 100%;
     display: flex;
@@ -68,6 +72,11 @@ function send(e: Event) {
     background-color: var(--md-sys-color-surface);
     padding: 5px 8px;
     bottom: 0;
+    &.disabled {
+        opacity: .7;
+        user-select: none;
+        pointer-events: none;
+    }
 }
 
 .trailing {

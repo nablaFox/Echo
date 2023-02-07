@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import ToolTip from '@/components/containment/ToolTip.vue'
-import { ref } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFormat } from '@/composables/format'
 import dayjs from 'dayjs'
 
+import ToolTip from '@/components/containment/ToolTip.vue'
+
 const props = defineProps<{
     roomName: string,
     since: Date,
-    exit: boolean,
-    totalTime: number | undefined
+    totalTime: number
 }>()
 
 const format = useFormat()
 const router = useRouter()
 const clock = ref<number>(0)
 const formatted = format.room(clock)
+const isClosed = computed(() => props.totalTime ? true : false)
 
 function updateDiff() {
     const now = dayjs()
@@ -24,10 +25,14 @@ function updateDiff() {
 
 const interval = setInterval(updateDiff, 1000)
 
-if (props.totalTime) {
-    clearInterval(interval)
-    clock.value = props.totalTime // time in ms
-}
+watch(props, now => {
+    if (now.totalTime) {
+        clearInterval(interval)
+        clock.value = props.totalTime
+    }
+}, { immediate: true })
+
+
 </script>
 
 <template>
@@ -35,7 +40,7 @@ if (props.totalTime) {
     <header class="room-header">
         <div class="content">
             <span
-                v-if="exit"
+                v-if="isClosed"
                 @click="router.push('/')"
                 class="material-icons exit" 
             > 
@@ -91,5 +96,8 @@ if (props.totalTime) {
     color: var(--md-sys-color-primary);
 }
 
-
+:deep(.tip) { 
+    padding: 10px;
+    bottom: -38px;
+}
 </style>

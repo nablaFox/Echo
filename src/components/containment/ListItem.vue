@@ -4,8 +4,8 @@ import { useSlots, computed } from 'vue';
 const slots = useSlots()
 
 const props = defineProps<{
-    overline?: String,
     headline: String,
+    overline?: String,
     trailText?: String,
     divider?: Boolean,
     variant?: String,
@@ -30,6 +30,7 @@ const Variant = computed(() => {
 
 
 <template>
+
     <div
         :class="[
             Variant,
@@ -38,7 +39,6 @@ const Variant = computed(() => {
         ]"
         class="list-item"
     >
-
         <div class="list-item__content">
             <div 
                 class="list-item__overline" 
@@ -72,6 +72,7 @@ const Variant = computed(() => {
 
         </div>
     </div>
+
 </template>
 
 <style lang="scss" scoped>
@@ -97,8 +98,9 @@ const Variant = computed(() => {
 }
 
 .list-item {
+    line-height: 1!important;
+    width: 100%;
     gap: 16px;
-    max-width: 360px;
     justify-content: flex-start;
     background-color: var(--md-sys-color-surface);
 

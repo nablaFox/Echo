@@ -18,7 +18,8 @@ onClickOutside(target, () => (active.value = false))
         ref="target"
     >
         <Transition>
-            <div class="tip"
+            <div 
+                class="tip"
                 v-if="active"
             >
                 {{ tip }}

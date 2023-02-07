@@ -11,6 +11,7 @@ import { useRouter } from 'vue-router'
 const userStore = useUser()
 const router = useRouter()
 const { roomInfo, exRooms } = storeToRefs(userStore)
+userStore.exRoomsLimit = 10
 
 async function onMainClick() {
 	const result = await userStore.searchRoom()

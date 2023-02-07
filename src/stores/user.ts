@@ -60,7 +60,7 @@ export const useUser = defineStore('user', () => {
     const loadExRooms = async () => {
         const roomRefs = collection(db, `users/${user.value!.id}/exRooms`)
         const _query = computed(
-            () => query(roomRefs, orderBy('addedAt'), limit(exRoomsLimit.value))
+            () => query(roomRefs, orderBy('addedAt', 'desc'), limit(exRoomsLimit.value))
         )
         await useCollection(_query, { target: exRooms }).promise.value
     }
@@ -97,6 +97,7 @@ export const useUser = defineStore('user', () => {
         inTheRoom,
         isWaiting,
         exRooms,
+        exRoomsLimit,
         load,
         add,
         update,

@@ -24,7 +24,6 @@ const onSend = (text: string) => sendMessage(text, user.value?.id)
     <div class="room" v-if="loaded">
         <RoomHeader
             :since="info.since.toDate()"
-            :exit="!info.open"
             :room-name="data?.name"
             :total-time="info?.totalTime"
         />
@@ -39,7 +38,10 @@ const onSend = (text: string) => sendMessage(text, user.value?.id)
             />
         </div>
 
-        <Controls @send="onSend"/>
+        <Controls 
+            @send="onSend"
+            :disabled="!info.open"
+        />
     </div>
   
 </template>
@@ -56,7 +58,7 @@ const onSend = (text: string) => sendMessage(text, user.value?.id)
     display: flex;
     flex-direction: column-reverse;
     overflow-y: scroll;
-    gap: 4px;
+    gap: 6px;
     padding: 0 8px;
     width: 100%;
     padding-top: 70px;

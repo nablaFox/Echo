@@ -82,10 +82,6 @@ defineExpose({ open, close })
 .v-leave-to {
     opacity: 0;
 }
-
-.opener { 
-    line-height: 0;
-}
  
 .mask {
     position: absolute;

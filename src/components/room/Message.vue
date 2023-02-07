@@ -8,8 +8,8 @@ dayjs.extend(calendar)
 const props = defineProps<{
     origin: string,
     text: string,
-    date: string,
-    exDate: string
+    date: Date,
+    exDate: Date
 }>()
 
 const dividerFormat = {
