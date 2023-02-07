@@ -54,6 +54,7 @@ watch(props, now => {
                 <span class="material-icons">more_vert</span>
             </div>
         </div>
+        <div class="curtain"></div>
     </header>
  
 </template>
@@ -69,6 +70,7 @@ watch(props, now => {
     left: 0;
     padding: 5px 10px;
     user-select: none;
+    background-color: var(--md-sys-color-background);
 }
 
 .content {
@@ -77,6 +79,17 @@ watch(props, now => {
     height: 60px;
     line-height: 0;
     gap: 10px;
+}
+
+.curtain::after {
+    display: block;
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -28px;
+    width: 100%;
+    height: 28px;
+	background: linear-gradient(var(--md-sys-color-background),transparent 70%);
 }
 
 .name { 

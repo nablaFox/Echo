@@ -1,8 +1,12 @@
-import dayjs from "dayjs"
-import utc from 'dayjs/plugin/utc'
 import type { Ref } from 'vue'
 import { computed } from "vue"
+
+import dayjs from "dayjs"
+import utc from 'dayjs/plugin/utc'
+import calendar from 'dayjs/plugin/calendar'
+
 dayjs.extend(utc)
+dayjs.extend(calendar)
 
 export function useFormat() {
 
@@ -30,8 +34,22 @@ export function useFormat() {
         }
     }
 
+    const divider = (date: Date) => {
+        const format =  {
+            lastDay: '[Yesterday]',
+            lastWeek: 'dddd',
+            sameElse: 'DD/MM/YYYY',
+            sameDay: '[Today]'
+        }
+        return  dayjs(date).calendar(null, format)
+    }
+
+    const timestamp = (date: Date) => dayjs(date).format('HH:mm')
+
     return {
         room,
-        preview
+        preview,
+        divider,
+        timestamp
     }
 }

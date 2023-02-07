@@ -1,42 +1,26 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import calendar from 'dayjs/plugin/calendar'
+import { useFormat } from '@/composables/format'
 import dayjs from 'dayjs'
-
-dayjs.extend(calendar)
 
 const props = defineProps<{
     origin: string,
     text: string,
     date: Date,
-    exDate: Date
+    prevDate: Date | null
 }>()
 
-const dividerFormat = {
-    lastDay: '[Yesterday]',
-    lastWeek: 'dddd',
-    sameElse: 'DD/MM/YYYY',
-    sameDay: 'HH:mm'
-}
-
-const timestamp = computed(() => dayjs(props.date).format('HH:mm'))
-const dividerDate = computed(() => dayjs(props.date).calendar(null, dividerFormat))
+const format = useFormat()
 
 const isDivider = computed(() => {
     const date = dayjs(props.date)
-    if (!props.exDate) { return true }
-    return Math.round(date.diff(props.exDate, 'day', true)) > 0
+    if (!props.prevDate) { return true }
+    return Math.round(date.diff(props.prevDate, 'day', true)) > 0
 })
 </script>
 
 
 <template>
-
-    <div class="divider" v-if="isDivider">
-        <span class="divider__content"> 
-            {{ dividerDate }}
-        </span>
-    </div>
 
     <div 
         class="message__container"
@@ -47,10 +31,16 @@ const isDivider = computed(() => {
                 {{ text }}
                 
                 <div class="message__date">
-                    {{ timestamp }}
+                    {{ format.timestamp(date) }}
                 </div>
             </div>
         </div>    
+    </div>
+
+    <div class="divider" v-if="isDivider">
+        <span class="divider__content"> 
+            {{ format.divider(date) }}
+        </span>
     </div>
 
 </template>
@@ -66,6 +56,7 @@ const isDivider = computed(() => {
     opacity: .8;
     border-radius: $medium-rounded;
     align-self: center;
+    user-select: none;
 }
 
 .divider__content {
@@ -83,9 +74,9 @@ const isDivider = computed(() => {
     border-radius: 16px 16px 16px 4px;
     padding: 6px 50px 9px 9px;
     position: relative;
-    max-width: 300px;
+    max-width: 260px;
     @extend %body-medium;
-    font-size: 15px;
+    font-size: 15.4px;
 }
 
 

@@ -30,15 +30,15 @@ const onSend = (text: string) => sendMessage(text, user.value?.id)
 
         <div class="message-wrapper">
             <Message
-                v-for="msg in messages"
+                v-for="msg, index in messages"
                 :origin="user?.id === msg.sender ? 'sender' : 'recipient'"
                 :date="msg.timestamp.toDate()"
-                :ex-date="msg.timestamp.toDate()"
                 :text="msg.text"
+                :prev-date="index < messages!.length - 1 ? messages![index + 1].timestamp.toDate() : null"
             />
         </div>
 
-        <Controls 
+        <Controls
             @send="onSend"
             :disabled="!info.open"
         />
@@ -61,7 +61,8 @@ const onSend = (text: string) => sendMessage(text, user.value?.id)
     gap: 6px;
     padding: 0 8px;
     width: 100%;
-    padding-top: 70px;
+    padding-top: 100px;
+    padding-bottom: 10px;
     @include hide-scrollbar()
 }
 
