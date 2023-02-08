@@ -3,9 +3,13 @@ import { useTextareaAutosize } from '@vueuse/core'
 import IconButton from '@/components/actions/IconButton.vue'
 
 const emit = defineEmits<{
-    (e: 'send', msg: string): void
+    (e: 'send', msg: string): void,
+    (e: 'godown'): void
 }>()
-defineProps<{ disabled: boolean }>()
+defineProps<{ 
+    disabled: boolean,
+    goDownBtn: boolean
+}>()
 
 const { textarea, input, triggerResize } = useTextareaAutosize()
 const disabledMsg = 'The room is closed'
@@ -26,6 +30,13 @@ function send(e: Event) {
         class="controls"
         :class="{ disabled: disabled }"
     >
+        <IconButton 
+            v-if="goDownBtn"
+            class="go-down"
+            icon="keyboard_arrow_down"
+            variant="tonal"
+            @click="emit('godown')"
+        />
         <div class="content">
             <div class="textarea__wrapper">
                 <textarea
@@ -73,10 +84,25 @@ function send(e: Event) {
     padding: 5px 8px;
     bottom: 0;
     &.disabled {
-        opacity: .7;
-        user-select: none;
-        pointer-events: none;
+        .trailing,
+        .content { 
+            opacity: .7;
+            pointer-events: none; 
+        }
     }
+    position: relative;
+}
+
+.go-down {
+    background-color: var(--md-sys-color-surface);
+    box-shadow: var(--md-sys-elevation1);
+    position: absolute;
+    right: 10px;
+    top: -28px;
+    opacity: 1;
+    z-index: 9999;
+    font-size: 10px!important;
+    padding: 0;
 }
 
 .trailing {

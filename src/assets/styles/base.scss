@@ -19,10 +19,13 @@ body {
     @extend %body-large;
 }
 
+html { scroll-behavior: smooth }
+
 h1 { @extend %headline-large }
 h2 { @extend %title-large }
 
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+    outline: none;
 }

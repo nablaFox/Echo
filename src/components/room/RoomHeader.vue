@@ -9,7 +9,7 @@ import ToolTip from '@/components/containment/ToolTip.vue'
 const props = defineProps<{
     roomName: string,
     since: Date,
-    totalTime: number
+    totalTime?: number
 }>()
 
 const format = useFormat()
@@ -28,7 +28,7 @@ const interval = setInterval(updateDiff, 1000)
 watch(props, now => {
     if (now.totalTime) {
         clearInterval(interval)
-        clock.value = props.totalTime
+        clock.value = props.totalTime as number
     }
 }, { immediate: true })
 
@@ -65,7 +65,7 @@ watch(props, now => {
     @include flex($direction: column);
     width: 100%;
     position: fixed;
-    z-index: 1;
+    z-index: 9999;
     top: 0;
     left: 0;
     padding: 5px 10px;

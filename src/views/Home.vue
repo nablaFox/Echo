@@ -37,9 +37,9 @@ async function onMainClick() {
 			/>
 		</div>
 
-		<div class="recents-wrapper">
-			<h2 class="title"> Recents </h2>
-			<div class="recents-container">
+		<div class="recents-wrapper" v-if="exRooms.length > 1">
+			<h2 class="recents__title"> Recents </h2>
+			<div class="recents__container">
 				<Recents :rooms="exRooms"/>
 			</div>
 		</div>
@@ -82,9 +82,14 @@ async function onMainClick() {
 	}
 }
 
-.recents-container { 
+.recents__container { 
 	flex: 1; 
 	@include flex();
 	padding-bottom: 10px;
+}
+
+.recents__title {
+	@extend %title-medium;
+	font-size: 18px
 }
 </style>
