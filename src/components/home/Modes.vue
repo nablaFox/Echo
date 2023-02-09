@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import Dialog from '../containment/Dialog.vue'
+import { ref } from 'vue';
 import { useUser } from '@/stores/user'
 
+import Dialog from '../containment/Dialog.vue'
+
 const userStore = useUser()
-const dialog = <InstanceType<typeof Dialog> | null>(null)
+const dialog = ref<InstanceType<typeof Dialog> | null>(null)
 
 const modes = [2, 4, 6]
 const changeMod = (mod: number) => userStore.update({ group: mod })

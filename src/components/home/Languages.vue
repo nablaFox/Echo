@@ -7,7 +7,7 @@ import { ref } from 'vue'
 
 const userStore = useUser()
 const { user } = storeToRefs(userStore)
-const dialog = <InstanceType<typeof Dialog> | null>(null)
+const dialog = ref<InstanceType<typeof Dialog> | null>(null)
 
 const languages = {
     English: 'EN',

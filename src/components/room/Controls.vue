@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
+import { ref, onMounted } from 'vue'
+
 import IconButton from '@/components/actions/IconButton.vue'
 
 const emit = defineEmits<{
@@ -13,6 +15,18 @@ defineProps<{
 
 const { textarea, input, triggerResize } = useTextareaAutosize()
 const disabledMsg = 'The room is closed'
+const pickerSelected = ref(false)
+const pickerTarget = ref<HTMLElement | null>(null)
+const pickerOptions = {
+    onEmojiSelect: (emoji: any) => {
+        if (!input.value) return (input.value = emoji.native);
+        input.value += emoji.native 
+    },
+    previewPosition: 'none',
+    dynamicWidth: true
+}
+const picker = new EmojiMart.Picker(pickerOptions)
+onMounted(() => pickerTarget.value?.appendChild(picker))
 
 function send(e: Event) {
     e.preventDefault()
@@ -21,62 +35,87 @@ function send(e: Event) {
     input.value = ''
     setTimeout(triggerResize, 0)
 }
+
+function onPicker() {
+    pickerSelected.value = !pickerSelected.value
+    if (!pickerSelected.value) textarea.value?.focus()
+}
+
+const warn = () => alert("I'm working on it!")
 </script>
 
 
 <template>
 
-    <footer 
-        class="controls"
-        :class="{ disabled: disabled }"
-    >
-        <IconButton 
-            v-if="goDownBtn"
-            class="go-down"
-            icon="keyboard_arrow_down"
-            variant="tonal"
-            @click="emit('godown')"
-        />
-        <div class="content">
-            <div class="textarea__wrapper">
-                <textarea
-                    ref="textarea"
-                    class="textarea"
-                    rows="1"
-                    :placeholder="disabled ? disabledMsg : 'Aa'"
-                    :value="input"
-                    @input="e => input = (e.target as HTMLInputElement).value"
-                    @keydown.enter="send"
-                ></textarea>
-            </div>
-
-            <div class="leading">
-                <IconButton icon="mood" />
-            </div>
-        </div>
-
-        <div class="trailing">
-            <IconButton
-                v-if="!input"
-                icon="music_note" 
-                variant="tonal" 
-            />
-            <IconButton
-                v-else
-                icon="send"
-                icon-variant="round"
+    <footer class="controls">
+        <div 
+            class="controls__top"
+            :class="{ disabled: disabled }"
+        >
+            <IconButton 
+                v-if="goDownBtn"
+                class="go-down"
+                icon="keyboard_arrow_down"
                 variant="tonal"
-                @click="send"
-                @touchend.prevent="send"
+                @click="emit('godown')"
             />
+            <div class="content">
+                <div class="textarea__wrapper">
+                    <textarea
+                        ref="textarea"
+                        class="textarea"
+                        rows="1"
+                        :placeholder="disabled ? disabledMsg : 'Aa'"
+                        :value="input"
+                        @input="e => input = (e.target as HTMLInputElement).value"
+                        @keydown.enter="send"
+                        @click="pickerSelected = false"
+                    ></textarea>
+                </div>
+
+                <div class="leading">
+                    <IconButton 
+                        :icon="pickerSelected ? 'keyboard' : 'mood'"
+                        @click="onPicker"
+                    />
+                </div>
+            </div>
+
+            <div class="trailing">
+                <IconButton
+                    v-if="!input"
+                    icon="music_note"
+                    variant="tonal"
+                    @click="warn"
+                />
+                <IconButton
+                    v-else
+                    icon="&#xe163"
+                    icon-variant="round"
+                    variant="tonal"
+                    @click="send"
+                    @touchend.prevent="send"
+                />
+            </div>
         </div>
+        <div
+            ref="pickerTarget" 
+            class="controls__picker"
+            v-show="pickerSelected"
+        >
+        </div>
+        <div class="keyboard"></div>
     </footer>
 
 </template>
 
 
 <style lang="scss" scoped>
-.controls {
+.controls { width: 100% }
+
+.keyboard { height: env(keyboard-inset-height, 0px) }
+
+.controls__top {
     width: 100%;
     display: flex;
     gap: 5px;
@@ -92,6 +131,13 @@ function send(e: Event) {
     }
     position: relative;
 }
+
+.controls__picker {
+    height: calc(var(--full-vh) * 0.4);
+    overflow: hidden;
+}
+
+:global(em-emoji-picker) { width: 100% }
 
 .go-down {
     background-color: var(--md-sys-color-surface);
@@ -121,6 +167,7 @@ function send(e: Event) {
     padding-left: 10px;
     box-sizing: content-box;
     padding-right: 10px;
+    height: 44px;
 }
 
 .textarea__wrapper {
@@ -128,7 +175,7 @@ function send(e: Event) {
     height: 100%;
     display: flex;
     align-items: center;
-    padding: 10px 5px;
+    padding: 13px 5px;
 }
 
 .textarea {
