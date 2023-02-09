@@ -2,6 +2,7 @@
 import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFormat } from '@/composables/format'
+import { useUser } from '@/stores/user'
 import dayjs from 'dayjs'
 
 import ToolTip from '@/components/containment/ToolTip.vue'
@@ -12,6 +13,7 @@ const props = defineProps<{
     totalTime?: number
 }>()
 
+const userStore = useUser()
 const format = useFormat()
 const router = useRouter()
 const clock = ref<number>(0)
@@ -51,7 +53,12 @@ watch(props, now => {
                 <ToolTip :tip="formatted">
                     <span class="material-icons schedule">schedule</span>
                 </ToolTip>
-                <span class="material-icons">more_vert</span>
+                <span 
+                    class="material-icons" 
+                    @click="userStore.leaveRoom"
+                >
+                    more_vert
+                </span>
             </div>
         </div>
         <div class="curtain"></div>
@@ -93,7 +100,7 @@ watch(props, now => {
 }
 
 .name { 
-    @extend %title-large;
+    @extend %headline-small;
     width: 100%
 }
 

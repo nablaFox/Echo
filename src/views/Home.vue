@@ -51,11 +51,11 @@ async function onMainClick() {
 
 <style lang="scss" scoped>
 .home {
-	height: calc(100vh - 66px - 60px);
+	height: calc(var(--full-vh) - 66px - 60px);
 	width: 100%;
 	@include flex($direction: column, $justify: start);
 	& > * { width: 100%; }
-	@include maxHSize(719px) { height: calc(100vh - 54.8px - 48px) }
+	@include maxHSize(719px) { height: calc(var(--full-vh) - 54.8px - 48px) }
 }
 
 .functions {

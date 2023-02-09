@@ -73,11 +73,11 @@ function onScroll(e: Event) {
             />
         </div>
 
-        <button @click="userStore.leaveRoom"> Leave Room </button>
+        
         <Controls
             @send="onSend"
             :disabled="!info.open"
-            :go-down-btn="y !== 0"
+            :go-down-btn="y <= -120"
             @godown="y = 0"
         />
     </div>
@@ -88,8 +88,9 @@ function onScroll(e: Event) {
 <style lang="scss" scoped>
 .room {
     width: 100%;
-    height: 100vh;
+    height: var(--full-vh);
     @include flex($direction: column, $justify: space-between);
+    overflow: hidden;
 }
 
 .message-wrapper {
@@ -102,7 +103,6 @@ function onScroll(e: Event) {
     padding-top: 70px;
     padding-bottom: 10px;
     @include hide-scrollbar();
-    
 }
 
 .banner {

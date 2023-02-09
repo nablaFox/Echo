@@ -114,8 +114,9 @@ function onEdit() {
     padding: 6px 50px 9px 9px;
     position: relative;
     max-width: 88%;
-    @extend %body-medium;
-    font-size: 15.4px;
+    @extend %body-large;
+    font-size: 17.4px;
+    line-height: 1.2;
     user-select: none;
    
 }
@@ -156,16 +157,18 @@ function onEdit() {
 .menu {
     position: absolute;
     background-color: var(--md-sys-color-surface1);
-    @extend %label-large;
+    font-size: 15.8px;
+    font-weight: 500;
     border-radius: $small-rounded;
     width: 80%;
-    height: 70px;
+    height: 75px;
     left: 0;
     z-index: -1;
     color: var(--md-sys-color-on-surface);
-    top: -50px;
-    padding: 5px;
+    top: -55px;
+    padding: 8px;
     overflow: hidden;
+    min-width: 60px;
 }
 
 .divider {
@@ -183,7 +186,8 @@ function onEdit() {
 
 .divider__content {
     @extend %label-large;
-    padding: 1px 0;
+    font-size: 15px;
+    padding: 3px 0;
 }
 
 .v-enter-active {
