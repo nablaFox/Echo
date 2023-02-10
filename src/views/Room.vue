@@ -22,12 +22,14 @@ const {
     loadMore, 
     messagesLimit,
     updateMessage,
-    deleteMessage
+    deleteMessage,
+    update
 } = useRoom(props.id)
 
 const onSend = (text: string) => sendMessage(text, user.value?.id)
 const onUpdateMsg = (id: string, text: string) => updateMessage(id, text)
 const onDeleteMsg = (id: string) => deleteMessage(id)
+const onUpdateName = (name: string) => update({ name: name })
 
 const wrapper = ref<HTMLElement | null>(null)
 const { y } = useScroll(wrapper, { behavior: 'smooth' })
@@ -51,6 +53,7 @@ function onScroll(e: Event) {
             :since="info.since.toDate()"
             :room-name="data?.name"
             :total-time="info?.totalTime"
+            @modname="onUpdateName"
         />
 
         <div 

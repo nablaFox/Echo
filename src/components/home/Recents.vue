@@ -47,15 +47,19 @@ const openRoom = (id: string) => router.push(`/room/${id}`)
 }
 
 .recent {
-    @include flex();
     gap: 4px;
     background-color: var(--md-sys-color-surface1);
     border-radius: $small-rounded;
     @extend %label-medium;
-    height: 40px;
-    padding: 0 10px;
-    @include maxHSize(719px) { height: 32px }
+    padding: 15px 10px;
+    line-height: 1!important;
+    @include maxHSize(719px) { padding: 10px 10px }
 }
 
 .time { color: var(--md-sys-color-primary) }
+
+.name {
+    @include text-overflow(100px);
+    display: inline-block;
+}
 </style>

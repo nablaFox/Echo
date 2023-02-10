@@ -82,4 +82,6 @@ function changeLang(event: any, iso: string) {
     scrollbar-width: none;
     &::-webkit-scrollbar { display: none }
 }
+
+.list-item:active::before { opacity: 0 }
 </style>

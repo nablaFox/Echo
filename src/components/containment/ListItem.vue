@@ -37,7 +37,7 @@ const Variant = computed(() => {
             divider && 'has-divider',
             round && 'round'
         ]"
-        class="list-item"
+        class="list-item state-layer"
     >
         <div class="list-item__content">
             <div 
@@ -107,13 +107,6 @@ const Variant = computed(() => {
     &.has-divider {
         border-bottom: 1px solid var(--md-sys-color-outline-variant);
     }
-
-    @include flex()
-
-}
-
-.list-item__leading {
-    z-index: 1;
 }
 
 .list-item__content {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 import IconButton from '@/components/actions/IconButton.vue'
 
@@ -8,13 +8,12 @@ const emit = defineEmits<{
     (e: 'send', msg: string): void,
     (e: 'godown'): void
 }>()
-defineProps<{ 
-    disabled: boolean,
+const props = defineProps<{ 
+    disabled: boolean
     goDownBtn: boolean
 }>()
 
 const { textarea, input, triggerResize } = useTextareaAutosize()
-const disabledMsg = 'The room is closed'
 const pickerSelected = ref(false)
 const pickerTarget = ref<HTMLElement | null>(null)
 const pickerOptions = {
@@ -27,6 +26,11 @@ const pickerOptions = {
 }
 const picker = new EmojiMart.Picker(pickerOptions)
 onMounted(() => pickerTarget.value?.appendChild(picker))
+
+watch(props,
+    now => now.disabled && (input.value = 'The room is closed'),
+    { immediate: true }
+)
 
 function send(e: Event) {
     e.preventDefault()
@@ -65,7 +69,7 @@ const warn = () => alert("I'm working on it!")
                         ref="textarea"
                         class="textarea"
                         rows="1"
-                        :placeholder="disabled ? disabledMsg : 'Aa'"
+                        placeholder="Aa"
                         :value="input"
                         @input="e => input = (e.target as HTMLInputElement).value"
                         @keydown.enter="send"

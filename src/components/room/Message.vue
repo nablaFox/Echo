@@ -23,7 +23,6 @@ const content = ref<HTMLElement | null>(null)
 const isFromSender = computed(() => props.origin === 'sender')
 const edit = ref(false)
 const menu = ref(false)
-const editText = ref('')
 
 onLongPress(
     container,
@@ -35,8 +34,8 @@ onClickOutside(
     container,
     () => {
         menu.value = false
-        if (edit.value) { 
-            emit('update', editText.value)
+        if (edit.value) {
+            emit('update', content.value!.innerText)
             edit.value = false
         }
     }
@@ -78,11 +77,9 @@ function onEdit() {
                 </div>
             </Transition>
             <div
-                @focus="e => editText = (e.target as HTMLElement).innerText"
-                @input="e => editText = (e.target as HTMLElement).innerText"
+                ref="content"
                 class="message__content"
                 :contenteditable="isFromSender && edit"
-                ref="content"
             >
                 {{ text }} 
             </div>

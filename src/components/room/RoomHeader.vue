@@ -3,14 +3,21 @@ import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFormat } from '@/composables/format'
 import { useUser } from '@/stores/user'
+import { onClickOutside } from '@vueuse/core'
 import dayjs from 'dayjs'
 
 import ToolTip from '@/components/containment/ToolTip.vue'
+import Menu from '../selection/Menu.vue'
+import IconButton from '../actions/IconButton.vue'
 
 const props = defineProps<{
     roomName: string,
     since: Date,
     totalTime?: number
+}>()
+
+const emit = defineEmits<{
+    (e: 'modname', name: string): void,
 }>()
 
 const userStore = useUser()
@@ -19,6 +26,27 @@ const router = useRouter()
 const clock = ref<number>(0)
 const formatted = format.room(clock)
 const isClosed = computed(() => props.totalTime ? true : false)
+const nameTarget = ref<HTMLInputElement | null>(null)
+const edit = ref(false)
+
+const menuItems = [
+    { content: 'Edit', task: onEdit },
+    { content: 'Leave', task: userStore.leaveRoom }
+]
+
+function onEdit() {
+    edit.value = true
+    setTimeout(() => nameTarget.value!.focus(), 0)
+    const end = nameTarget.value!.value.length
+    nameTarget.value?.setSelectionRange(end, end)
+    nameTarget.value
+}
+
+onClickOutside(nameTarget, () => {
+    emit('modname', nameTarget.value!.value)
+    nameTarget.value!.scrollLeft = 0
+    edit.value = false
+})
 
 function updateDiff() {
     const now = dayjs()
@@ -33,8 +61,6 @@ watch(props, now => {
         clock.value = props.totalTime as number
     }
 }, { immediate: true })
-
-
 </script>
 
 <template>
@@ -44,21 +70,34 @@ watch(props, now => {
             <span
                 v-if="isClosed"
                 @click="router.push('/')"
-                class="material-icons exit" 
+                class="material-icons exit"
             > 
                 arrow_back
             </span>
-            <div class="name"> {{ roomName }} </div>
+            <textarea 
+                class="name"
+                ref="nameTarget"
+                rows="1"
+                :readonly="!edit"
+            >{{ roomName }}</textarea>
             <div class="trailing">
                 <ToolTip :tip="formatted">
-                    <span class="material-icons schedule">schedule</span>
+                    <span class="material-icons schedule">
+                        schedule
+                    </span>
                 </ToolTip>
-                <span 
-                    class="material-icons" 
-                    @click="userStore.leaveRoom"
+                <Menu
+                    width="150px"
+                    :items="menuItems"
+                    :gap="20"
+                    :blocked="isClosed"
                 >
-                    more_vert
-                </span>
+                    <IconButton 
+                        icon="more_vert" 
+                        as="span"
+                        :style="{ pointerEvents: isClosed ? 'none' : 'all' }"
+                    />
+                </Menu>
             </div>
         </div>
         <div class="curtain"></div>
@@ -81,11 +120,11 @@ watch(props, now => {
 }
 
 .content {
-    @include flex($justify: start);
+    @include flex($justify: space-between);
     width: 100%;
     height: 60px;
     line-height: 0;
-    gap: 10px;
+    gap: 8px;
 }
 
 .curtain::after {
@@ -100,13 +139,15 @@ watch(props, now => {
 }
 
 .name { 
-    @extend %headline-small;
-    width: 100%
+    @extend %title-large;
+    width: 70%;
+    user-select: none;
+    margin-right: 6px;
 }
 
 .trailing {
     @include flex();
-    gap: 10px;
+    gap: 5px;
 }
 
 .schedule {
@@ -119,5 +160,13 @@ watch(props, now => {
 :deep(.tip) { 
     padding: 10px;
     bottom: -38px;
+}
+
+textarea {
+    resize: none;
+    padding: 0;
+    white-space: nowrap;
+    @include hide-scrollbar();
+    width: 80%;
 }
 </style>

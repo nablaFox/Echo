@@ -27,6 +27,13 @@
     height: 100%;
 }
 
+@mixin text-overflow($max-width: false) {
+    @if $max-width { max-width: $max-width }
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 @mixin hide-scrollbar() {
     scrollbar-width: none;
     &::-webkit-scrollbar { display: none }
