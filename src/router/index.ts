@@ -1,57 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '@/composables/auth'
 import { useUser } from '@/stores/user'
-
-import MainLayout from '@/layouts/Main.vue'
-import FullScreen from '@/layouts/FullScreen.vue'
-
-import Home from '@/views/Home.vue'
-import SignIn from '@/views/SignIn.vue'
-import SignUp from '@/views/SignUp.vue'
-import Lobby from '@/views/Lobby.vue'
-import Room from '@/views/Room.vue'
-
-function checkLobby() {
-	const userStore = useUser()
-	if (!userStore.isWaiting) return false
-}
+import routes from './routes'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
-	routes: [
-		{
-			path: '/',
-			name: 'home',
-			component: Home,
-			meta: { layout: MainLayout }
-		},
-		{
-			path: '/signin',
-			name: 'SignIn',
-			component: SignIn,
-			meta: { layout: MainLayout },
-		},
-		{
-			path: '/signup',
-			name: 'SignUp',
-			component: SignUp,
-			meta: { layout: MainLayout },
-		},
-		{
-			path: '/lobby',
-			name: 'Lobby',
-			component: Lobby,
-			beforeEnter: checkLobby,
-			meta: { layout: FullScreen },
-		},
-		{
-			path: '/room/:id',
-			name: 'Room',
-			component: Room,
-			props: true,
-			meta: { layout: FullScreen },
-		}
-	],
+	routes
 })
 
 router.beforeEach(async (to, from, next) => {
@@ -69,7 +23,10 @@ router.beforeEach(async (to, from, next) => {
 	if (
 		to.name === 'SignUp'
 		|| to.name === 'SignIn'
-	) { return next() }
+	) {
+		if (await isLogin()) return next({ name: 'Home' }) // redirect the user if is logged
+		return next() 
+	}
 	// if the user wants to login, there is no need to load data
 	
 	try { !userStore.isLoaded && await userStore.load() }
