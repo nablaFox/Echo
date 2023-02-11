@@ -44,7 +44,7 @@ function send(e: Event) {
 
 function onPicker() {
     pickerSelected.value = !pickerSelected.value
-    if (!pickerSelected.value) textarea.value?.focus()
+    !pickerSelected.value && textarea.value?.focus()
 }
 
 const warn = () => alert("I'm working on it!")
@@ -63,7 +63,7 @@ const warn = () => alert("I'm working on it!")
                 class="go-down"
                 icon="keyboard_arrow_down"
                 variant="tonal"
-                @click="emit('godown')"
+                @touchend.prevent="emit('godown')"
             />
             <div class="content">
                 <div class="textarea__wrapper">
@@ -77,7 +77,7 @@ const warn = () => alert("I'm working on it!")
                         @input="e => input = (e.target as HTMLInputElement).value"
                         @keydown.enter="send"
                         @click="pickerSelected = false"
-                    ></textarea>
+                    />
                 </div>
 
                 <div class="leading">

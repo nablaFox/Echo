@@ -28,6 +28,7 @@ const formatted = format.room(clock)
 const isClosed = computed(() => props.totalTime ? true : false)
 const nameTarget = ref<HTMLInputElement | null>(null)
 const edit = ref(false)
+const inputName = ref('')
 
 const menuItems = [
     { content: 'Edit', task: onEdit },
@@ -37,18 +38,18 @@ const menuItems = [
 function onEdit() {
     edit.value = true
     setTimeout(() => nameTarget.value!.focus(), 0)
-    const end = nameTarget.value!.value.length
+    const end = inputName.value.length
     nameTarget.value?.setSelectionRange(end, end)
-    nameTarget.value
 }
 
 onClickOutside(nameTarget, () => {
     if (edit.value) {
-        const msg = nameTarget.value!.value ? nameTarget.value!.value : 'New Room'
-        emit('edit', msg)
-        nameTarget.value!.value = msg
+        const msg = /[a-zA-Z]/.test(inputName.value) ? 
+            inputName.value : 'New Room'
+        inputName.value = msg
         nameTarget.value!.scrollLeft = 0
         edit.value = false
+        emit('edit', msg)
     }
 })
 
@@ -62,8 +63,10 @@ const interval = setInterval(updateDiff, 1000)
 watch(props, now => {
     if (now.totalTime) {
         clearInterval(interval)
-        clock.value = props.totalTime as number
+        clock.value = now.totalTime
     }
+
+    inputName.value = now.roomName
 }, { immediate: true })
 </script>
 
@@ -84,7 +87,10 @@ watch(props, now => {
                     ref="nameTarget"
                     rows="1"
                     :readonly="!edit"
-                >{{ roomName }}</textarea>
+                    :value="inputName"
+                    @input="e => inputName = (e.target as HTMLInputElement).value"
+                    @keydown.enter.prevent
+                />
             </div>
             
             <div class="right">

@@ -47,7 +47,6 @@ function onScroll(e: Event) {
 
 <template>
 
-
     <div class="room" v-if="loaded">
         <RoomHeader
             :since="info.since.toDate()"
@@ -76,7 +75,6 @@ function onScroll(e: Event) {
             />
         </div>
 
-        
         <Controls
             @send="onSend"
             :disabled="!info.open"
@@ -107,10 +105,4 @@ function onScroll(e: Event) {
     padding-bottom: 10px;
     @include hide-scrollbar();
 }
-
-.banner {
-    padding-top: $room-header-height;
-    flex: 1;
-}
-
 </style>
