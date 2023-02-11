@@ -53,7 +53,7 @@ function onScroll(e: Event) {
             :since="info.since.toDate()"
             :room-name="data?.name"
             :total-time="info?.totalTime"
-            @modname="onUpdateName"
+            @edit="onUpdateName"
         />
 
         <div 
@@ -103,7 +103,7 @@ function onScroll(e: Event) {
     gap: 6px;
     padding: 0 8px;
     width: 100%;
-    padding-top: 70px;
+    padding-top: 80px;
     padding-bottom: 10px;
     @include hide-scrollbar();
 }

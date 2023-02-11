@@ -15,7 +15,7 @@ userStore.exRoomsLimit = 10
 
 async function onMainClick() {
 	const result = await userStore.searchRoom()
-	if (result) router.push('/lobby')
+	if (result) { router.push('/lobby') }
 	else { } // do something
 }
 

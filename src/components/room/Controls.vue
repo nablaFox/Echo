@@ -18,6 +18,7 @@ const pickerSelected = ref(false)
 const pickerTarget = ref<HTMLElement | null>(null)
 const pickerOptions = {
     onEmojiSelect: (emoji: any) => {
+        if (props.disabled) return
         if (!input.value) return (input.value = emoji.native);
         input.value += emoji.native 
     },
@@ -28,7 +29,8 @@ const picker = new EmojiMart.Picker(pickerOptions)
 onMounted(() => pickerTarget.value?.appendChild(picker))
 
 watch(props,
-    now => now.disabled && (input.value = 'The room is closed'),
+    now => now.disabled && (input.value = 'The room is closed') 
+        && (pickerSelected.value = false),
     { immediate: true }
 )
 
@@ -71,6 +73,7 @@ const warn = () => alert("I'm working on it!")
                         rows="1"
                         placeholder="Aa"
                         :value="input"
+                        :readonly="disabled"
                         @input="e => input = (e.target as HTMLInputElement).value"
                         @keydown.enter="send"
                         @click="pickerSelected = false"
@@ -171,7 +174,7 @@ const warn = () => alert("I'm working on it!")
     padding-left: 10px;
     box-sizing: content-box;
     padding-right: 10px;
-    height: 44px;
+    min-height: 45px;
 }
 
 .textarea__wrapper {

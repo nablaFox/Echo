@@ -7,7 +7,11 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 const { inTheRoom, currentRoom } = storeToRefs(useUser())
 
-watch(inTheRoom, now => now && router.push(`room/${currentRoom.value.id}`))
+watch(
+    inTheRoom, 
+    now => now && router.push(`room/${currentRoom.value.id}`),
+    { immediate: true }
+)
 
 </script>
 

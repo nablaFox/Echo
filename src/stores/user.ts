@@ -68,7 +68,7 @@ export const useUser = defineStore('user', () => {
     const loadMoreExRooms = (delta: number) => exRoomsLimit.value += delta
 
     const searchRoom = async () => {
-        const result = await fetch('https://echo-end.onrender.com/rooms/waitingRoom', {
+        const result = await fetch('https://echoend-afinex04.b4a.run/rooms/waitingRoom', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export const useUser = defineStore('user', () => {
     }
 
     const leaveRoom = async () => {
-        const result = await fetch(`https://echo-end.onrender.com/rooms/${currentRoom.value.id}`, {
+        const result = await fetch(`https://echoend-afinex04.b4a.run/rooms/${currentRoom.value.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-    (e: 'modname', name: string): void,
+    (e: 'edit', name: string): void,
 }>()
 
 const userStore = useUser()
@@ -43,9 +43,13 @@ function onEdit() {
 }
 
 onClickOutside(nameTarget, () => {
-    emit('modname', nameTarget.value!.value)
-    nameTarget.value!.scrollLeft = 0
-    edit.value = false
+    if (edit.value) {
+        const msg = nameTarget.value!.value ? nameTarget.value!.value : 'New Room'
+        emit('edit', msg)
+        nameTarget.value!.value = msg
+        nameTarget.value!.scrollLeft = 0
+        edit.value = false
+    }
 })
 
 function updateDiff() {
@@ -67,20 +71,23 @@ watch(props, now => {
 
     <header class="room-header">
         <div class="content">
-            <span
-                v-if="isClosed"
-                @click="router.push('/')"
-                class="material-icons exit"
-            > 
-                arrow_back
-            </span>
-            <textarea 
-                class="name"
-                ref="nameTarget"
-                rows="1"
-                :readonly="!edit"
-            >{{ roomName }}</textarea>
-            <div class="trailing">
+            <div class="left">
+                <span
+                    v-if="isClosed"
+                    @click="router.push('/')"
+                    class="material-icons exit"
+                > 
+                    arrow_back
+                </span>
+                <textarea 
+                    class="name"
+                    ref="nameTarget"
+                    rows="1"
+                    :readonly="!edit"
+                >{{ roomName }}</textarea>
+            </div>
+            
+            <div class="right">
                 <ToolTip :tip="formatted">
                     <span class="material-icons schedule">
                         schedule
@@ -124,28 +131,27 @@ watch(props, now => {
     width: 100%;
     height: 60px;
     line-height: 0;
-    gap: 8px;
 }
 
-.curtain::after {
-    display: block;
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: -28px;
+.left {
+    @include flex($justify: start);
+    gap: 10px;
+    margin-right: 15px;
     width: 100%;
-    height: 28px;
-	background: linear-gradient(var(--md-sys-color-background),transparent 70%);
 }
 
 .name { 
     @extend %title-large;
     width: 70%;
     user-select: none;
-    margin-right: 6px;
+    resize: none;
+    padding: 0;
+    white-space: nowrap;
+    @include hide-scrollbar();
+    width: 80%;
 }
 
-.trailing {
+.right {
     @include flex();
     gap: 5px;
 }
@@ -162,11 +168,14 @@ watch(props, now => {
     bottom: -38px;
 }
 
-textarea {
-    resize: none;
-    padding: 0;
-    white-space: nowrap;
-    @include hide-scrollbar();
-    width: 80%;
+.curtain::after {
+    display: block;
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -28px;
+    width: 100%;
+    height: 28px;
+	background: linear-gradient(var(--md-sys-color-background),transparent 70%);
 }
 </style>

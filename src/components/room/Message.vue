@@ -26,20 +26,17 @@ const menu = ref(false)
 
 onLongPress(
     container,
-    () => { isFromSender.value && (menu.value = true) },
+    () => { isFromSender.value && !edit.value && !menu.value && (menu.value = true) },
     { delay: 200 }
 )
 
-onClickOutside(
-    container,
-    () => {
-        menu.value = false
-        if (edit.value) {
-            emit('update', content.value!.innerText)
-            edit.value = false
-        }
+onClickOutside(container, () => {
+    menu.value = false
+    if (edit.value) {
+        emit('update', content.value!.innerText)
+        edit.value = false
     }
-)
+})
 
 const isDivider = computed(() => {
     const date = dayjs(props.date)
@@ -55,12 +52,14 @@ function onDelete() {
 function onEdit() {
     menu.value = false
     edit.value = true
+
     setTimeout(() => content.value?.focus(), 0)
 }
 </script>
 
 
 <template>
+
 
     <div
         class="message__container"
@@ -166,6 +165,8 @@ function onEdit() {
     padding: 8px;
     overflow: hidden;
     min-width: 60px;
+
+    &__item:first-child {  margin-bottom: 4px; }
 }
 
 .divider {

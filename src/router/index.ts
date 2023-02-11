@@ -54,9 +54,7 @@ const router = createRouter({
 	],
 })
 
-let loadingPromise: undefined | Promise<void>
-
-router.beforeEach(async to => {
+router.beforeEach(async (to, from, next) => {
 	const { isLogin } = useAuth()
 	const userStore = useUser()
 
@@ -65,20 +63,17 @@ router.beforeEach(async to => {
 		&& to.name !== 'SignUp'
 		&& to.name !== 'SignIn'
 	) {
-		return { name: 'SignUp' }
+		next({ name: 'SignUp' })
 	}
 
 	if (
 		to.name === 'SignUp'
 		|| to.name === 'SignIn'
-	) { return }
+	) { return next() }
 	// if the user wants to login, there is no need to load data
 	
-	try {
-		!loadingPromise && (loadingPromise = userStore.load())
-		await loadingPromise
-	}
-	catch { return { name: 'SignUp' } }
+	try { !userStore.isLoaded && await userStore.load() }
+	catch { return next({ name: 'SignUp' }) }
 	// if there is an error, since the user is logged
 	// it means that the user has yet to register
 
@@ -86,18 +81,20 @@ router.beforeEach(async to => {
 		userStore.inTheRoom
 		&& to.name !== 'Room'
 	) {
-		return { 
+		return next({ 
 			name: 'Room', 
 			params: { id: userStore.currentRoom.id }
-		}
+		})
 	} // if the user is in the room, always redirect him in the room
 
 	if (
 		userStore.isWaiting
 		&& to.name !== 'Lobby'
 	) {
-		return { name: 'Lobby' }
+		return next({ name: 'Lobby' })
 	} // if the user is waiting, always redirect him in the lobby
+
+	next()
 })
 
 export default router
