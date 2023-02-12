@@ -42,12 +42,12 @@ function changeLang(event: any, iso: string) {
 
     <Dialog
         :actions="['Cancel', 'Ok']"
-        headline="Selezione lingua"
+        headline="Language Selection"
         @confirm="updateLang"
         divider
         ref="dialog"
     > 
-        <template #supporting> La diversità è bella! </template>
+        <template #supporting> Diversity is good! </template>
         <template #body>
             <ListItem
                 v-for="iso, language in languages"

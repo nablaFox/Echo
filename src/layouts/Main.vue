@@ -30,7 +30,6 @@ provide('bottomBar', {
 <style lang="scss">
 .main-layout {
     padding: 10px 16px;
-    position: relative;
     @include flex($direction: column);
 }
 </style>
