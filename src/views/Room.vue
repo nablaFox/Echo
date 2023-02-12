@@ -26,7 +26,7 @@ const {
     update
 } = useRoom(props.id)
 
-const onSend = (text: string) => sendMessage(text, user.value?.id)
+const onSend = (text: string) => sendMessage(text, user.value!.id, user.value!.username)
 const onUpdateMsg = (id: string, text: string) => updateMessage(id, text)
 const onDeleteMsg = (id: string) => deleteMessage(id)
 const onUpdateName = (name: string) => update({ name: name })
@@ -62,7 +62,8 @@ function onScroll(e: Event) {
         >
             <Message
                 v-for="msg, index in messages"
-                :origin="user?.id === msg.sender ? 'sender' : 'recipient'"
+                :origin="user?.id === msg.sender.id ? 'sender' : 'recipient'"
+                :username="msg.sender.username"
                 :menu-disabled="!info.open"
                 :date="msg.timestamp.toDate()"
                 :text="msg.text"

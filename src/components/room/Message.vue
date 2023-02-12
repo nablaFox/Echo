@@ -10,7 +10,8 @@ const props = defineProps<{
     text: string
     date: Date
     prevDate: Date | null
-    menuDisabled: boolean
+    menuDisabled: boolean,
+    username: string
 }>()
 const emit = defineEmits<{
     (e: 'update', text: string): void,
@@ -60,12 +61,11 @@ function onEdit() {
 
 <template>
 
-
     <div
         class="message__container"
         :class="origin"
         :style="{ zIndex: menu ? 2 : undefined }"
-    > 
+    >
         <div class="message" ref="container">
             <Transition>
                 <div class="menu" 
@@ -80,7 +80,15 @@ function onEdit() {
                 class="message__content"
                 :contenteditable="isFromSender && edit"
             >
-                {{ text }} 
+                <div
+                    class="username" 
+                    v-if="!isFromSender"
+                >
+                   {{ username }}
+                </div>
+                <div class="text">
+                    {{ text }}
+                </div>
             </div>
             <div class="message__date">
                 {{ format.timestamp(date) }}
@@ -117,7 +125,12 @@ function onEdit() {
    
 }
 
-.message__content { word-wrap: break-word }
+.username {
+    @extend %label-large;
+    color: var(--md-sys-color-primary)
+}
+
+.text { word-wrap: break-word }
 
 .message__date {
     position: absolute;

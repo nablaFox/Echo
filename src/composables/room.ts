@@ -29,10 +29,17 @@ export function useRoom(id: string) {
         await useCollection(_query, { target: messages }).promise.value
     }
 
-    const sendMessage = async (text: string, sender: string) => {
+    const sendMessage = async (
+        text: string, 
+        senderId: string, 
+        senderUsername: string
+    ) => {
         const messagesRef = collection(db, `rooms/${id}/messages`)
         addDoc(messagesRef, {
-            sender: sender,
+            sender: {
+                id: senderId,
+                username: senderUsername
+            },
             text: text,
             timestamp: Timestamp.now()
         })
