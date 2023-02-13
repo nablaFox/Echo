@@ -188,7 +188,7 @@ function onEdit() {
     margin: 15px 0;
     @include flex($justify: center);
     background-color: var(--md-sys-color-surface1);
-    opacity: .8;
+    color: var(--md-sys-color-on-surface-variant);
     border-radius: $medium-rounded;
     align-self: center;
     user-select: none;
