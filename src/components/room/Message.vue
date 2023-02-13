@@ -49,13 +49,6 @@ function onDelete() {
     menu.value = false
     emit('delete')
 }
-
-function onEdit() {
-    menu.value = false
-    edit.value = true
-
-    setTimeout(() => content.value?.focus(), 0)
-}
 </script>
 
 
@@ -66,13 +59,21 @@ function onEdit() {
         :class="origin"
         :style="{ zIndex: menu ? 2 : undefined }"
     >
-        <div class="message" ref="container">
+        <div 
+            class="message" 
+            ref="container"
+            @touchend.prevent
+        >
             <Transition>
                 <div class="menu" 
                     v-if="menu && !menuDisabled"
                 >
-                    <div class="menu__item" @click="onEdit"> Edit </div>
-                    <div class="menu__item" @click="onDelete"> Delete </div>
+                    <div 
+                        class="menu__item" 
+                        @touchend.stop.prevent="onDelete"
+                    > 
+                        Delete 
+                    </div>
                 </div>
             </Transition>
             <div
@@ -170,16 +171,15 @@ function onEdit() {
     font-weight: 500;
     border-radius: $small-rounded;
     width: 80%;
-    height: 75px;
+    height: 60px;
     left: 0;
     z-index: -1;
     color: var(--md-sys-color-on-surface);
-    top: -55px;
-    padding: 8px;
+    top: -40px;
     overflow: hidden;
     min-width: 60px;
-
-    &__item:first-child {  margin-bottom: 4px; }
+    padding: 10px 0 0 5px;
+    
 }
 
 .divider {
