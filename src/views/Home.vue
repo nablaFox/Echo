@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUser } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
@@ -6,26 +8,20 @@ import MainButton from '@/components/home/MainButton.vue'
 import OptionBar from '@/components/home/OptionBar.vue'
 import UserInfo from '@/components/home/UserInfo.vue'
 import Recents from '@/components/home/Recents.vue'
-import { useRouter } from 'vue-router'
 
-const userStore = useUser()
 const router = useRouter()
+const userStore = useUser()
 const { roomInfo, exRooms } = storeToRefs(userStore)
 userStore.exRoomsLimit = 10
 
-async function onMainClick() {
-	const result = await userStore.searchRoom()
-	if (result) { router.push('/lobby') }
-	else { } // do something
-}
-
+watch(roomInfo, now => now?.isWaiting && router.push('/lobby'))
 </script>
 
 <template>
 
 	<main class="home">
 		<div class="functions">
-			<MainButton @click="onMainClick"/>
+			<MainButton @click="userStore.searchRoom"/>
 			<OptionBar />
 		</div>
 

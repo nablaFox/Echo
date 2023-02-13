@@ -2,8 +2,8 @@
 import { useEventListener } from '@vueuse/core'
 
 const resize = () => document.documentElement.style.setProperty('--full-vh', `${window.innerHeight}px`)
-resize()
 useEventListener(window, 'resize', resize)
+resize()
 
 if ("virtualKeyboard" in navigator) {
   (navigator as any).virtualKeyboard.overlaysContent = true
