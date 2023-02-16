@@ -1,5 +1,3 @@
-import { useUser } from '@/stores/user'
-
 import MainLayout from '@/layouts/Main.vue'
 import FullScreen from '@/layouts/FullScreen.vue'
 
@@ -8,11 +6,6 @@ import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
 import Lobby from '@/views/Lobby.vue'
 import Room from '@/views/Room.vue'
-
-function checkLobby() {
-	const userStore = useUser()
-	if (!userStore.isWaiting) return false
-}
 
 export default [
     {
@@ -37,7 +30,6 @@ export default [
         path: '/lobby',
         name: 'Lobby',
         component: Lobby,
-        beforeEnter: checkLobby,
         meta: { layout: FullScreen },
     },
     {

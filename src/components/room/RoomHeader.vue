@@ -32,7 +32,7 @@ const inputName = ref('')
 
 const menuItems = [
     { content: 'Edit', task: onEdit },
-    { content: 'Leave', task: userStore.leaveRoom }
+    { content: 'Leave', task: onLeave }
 ]
 
 function onEdit() {
@@ -40,6 +40,11 @@ function onEdit() {
     setTimeout(() => nameTarget.value!.focus(), 0)
     const end = inputName.value.length
     nameTarget.value?.setSelectionRange(end, end)
+}
+
+async function onLeave() {
+    const result = await userStore.leaveRoom()
+    if (!result) { alert('Something went wrong!') }
 }
 
 onClickOutside(nameTarget, () => {

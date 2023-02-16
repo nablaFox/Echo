@@ -68,25 +68,29 @@ export const useUser = defineStore('user', () => {
     const loadMoreExRooms = (delta: number) => exRoomsLimit.value += delta
 
     const searchRoom = async () => {
-        const result = await fetch('http://localhost:3000/rooms/waitingRoom', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token.value,
-            }
-        })
-        if (result.ok) return result
+        try {
+            const result = await fetch('http://localhost:3000/hall', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token.value,
+                }
+            })
+            if (result.ok) return result
+        } catch(err) { console.error('Failed to search room: ' + err)}
     }
 
     const leaveRoom = async () => {
-        const result = await fetch(`http://localhost:3000/rooms/${currentRoom.value.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token.value,
-            }
-        })
-        if (result.ok) return result
+        try {
+            const result = await fetch(`http://localhost:3000/rooms/${currentRoom.value.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token.value,
+                }
+            })
+            if (result.ok) return result
+        } catch(err) { console.error('Failed  to leave room: ' + err) }
     }
 
     return {
