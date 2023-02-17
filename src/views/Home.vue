@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { useUser } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
+import Main from '@/layouts/Main.vue'
 import MainButton from '@/components/home/MainButton.vue'
 import OptionBar from '@/components/home/OptionBar.vue'
 import UserInfo from '@/components/home/UserInfo.vue'
@@ -11,7 +12,6 @@ import Recents from '@/components/home/Recents.vue'
 const router = useRouter()
 const userStore = useUser()
 const { roomInfo, exRooms } = storeToRefs(userStore)
-userStore.exRoomsLimit = 10
 
 async function onMainClick() {
 	const result = await userStore.searchRoom()
@@ -24,7 +24,7 @@ async function onMainClick() {
 
 <template>
 
-	<main class="home">
+	<Main>
 		<div class="functions">
 			<MainButton @click="onMainClick"/>
 			<OptionBar />
@@ -44,16 +44,14 @@ async function onMainClick() {
 				<Recents :rooms="exRooms"/>
 			</div>
 		</div>
-
-	</main>
+	</Main>
 
 </template>
 
 
 <style lang="scss" scoped>
-.home {
+:deep(main) {
 	height: calc(var(--full-vh) - 66px - 60px);
-	width: 100%;
 	@include flex($direction: column, $justify: start);
 	& > * { width: 100%; }
 	@include maxHSize(719px) { height: calc(var(--full-vh) - 54.8px - 48px) }

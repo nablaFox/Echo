@@ -47,44 +47,42 @@ function onScroll(e: Event) {
 
 <template>
 
-    <Transition>
-        <div class="room" v-if="loaded">
-            <RoomHeader
-                :since="info.since.toDate()"
-                :room-name="data?.name"
-                :total-time="info?.totalTime"
-                @edit="onUpdateName"
-            />
+    <div class="room" v-if="loaded">
+        <RoomHeader
+            :since="info.since.toDate()"
+            :room-name="data?.name"
+            :total-time="info?.totalTime"
+            @edit="onUpdateName"
+        />
 
-            <div 
-                class="message-wrapper"
-                ref="wrapper"
-                @scroll="onScroll"
-            >
-                <Message
-                    v-for="msg, index in messages"
-                    :origin="user?.id === msg.sender.id ? 'sender' : 'recipient'"
-                    :username="msg.sender.username"
-                    :menu-disabled="!info.open"
-                    :date="msg.timestamp.toDate()"
-                    :text="msg.text"
-                    :prev-date="
-                        index < messages!.length - 1 ? 
-                        messages![index + 1].timestamp.toDate() : null
-                    "
-                    @delete="onDeleteMsg(msg.id)"
-                    @update="text => onUpdateMsg(msg.id, text)"
-                />
-            </div>
-
-            <Controls
-                @send="onSend"
-                :disabled="!info.open"
-                :go-down-btn="y <= -120"
-                @godown="y = 0"
+        <div 
+            class="message-wrapper"
+            ref="wrapper"
+            @scroll="onScroll"
+        >
+            <Message
+                v-for="msg, index in messages"
+                :origin="user?.id === msg.sender.id ? 'sender' : 'recipient'"
+                :username="msg.sender.username"
+                :menu-disabled="!info.open"
+                :date="msg.timestamp.toDate()"
+                :text="msg.text"
+                :prev-date="
+                    index < messages!.length - 1 ? 
+                    messages![index + 1].timestamp.toDate() : null
+                "
+                @delete="onDeleteMsg(msg.id)"
+                @update="text => onUpdateMsg(msg.id, text)"
             />
         </div>
-    </Transition>
+
+        <Controls
+            @send="onSend"
+            :disabled="!info.open"
+            :go-down-btn="y <= -120"
+            @godown="y = 0"
+        />
+    </div>
   
 </template>
 
@@ -109,14 +107,5 @@ function onScroll(e: Event) {
     @include hide-scrollbar();
 }
 
-.v-enter-active,
-.v-leave-active {  
-    transition: all 0.3s
-}
-
-.v-enter-from,
-.v-leave-to {
-    opacity: 0; 
-    filter: blur(1rem);
-}
+:global(.blur-leave-active) {  all: initial!important }
 </style>

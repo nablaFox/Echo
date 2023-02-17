@@ -14,13 +14,17 @@ provide('bottomBar', {
     hideBottomBar,
     showBottomBar
 })
+
+// add props such as height
 </script>
 
 
 <template>
     <div class="main-layout">
 		<ActionBar />
-        <slot />
+        <main class="main">
+            <slot />
+        </main>
         <BottomAppBar v-if="isBottomBar "/>
     </div>
 </template>
@@ -31,5 +35,11 @@ provide('bottomBar', {
 .main-layout {
     padding: 10px 16px;
     @include flex($direction: column);
+    justify-content: start;
 }
+
+.main {
+    width: 100%;
+}
+
 </style>
