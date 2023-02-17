@@ -110,7 +110,6 @@ function onDelete() {
 .message__container {
     width: 100%;
     @include flex($justify: start);
-    padding: 0 8px;
     position: relative;
 }
 

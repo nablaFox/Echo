@@ -132,7 +132,7 @@ watch(props, now => {
     z-index: 9999;
     top: 0;
     left: 0;
-    padding: 5px 10px;
+    padding: 0 10px;
     user-select: none;
     background-color: var(--md-sys-color-background);
 }
@@ -140,7 +140,7 @@ watch(props, now => {
 .content {
     @include flex($justify: space-between);
     width: 100%;
-    height: 60px;
+    height: 62px;
     line-height: 0;
 }
 

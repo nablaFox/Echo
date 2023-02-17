@@ -33,7 +33,7 @@ provide('bottomBar', {
 
 <style lang="scss">
 .main-layout {
-    padding: 10px 16px;
+    padding: $page-padding;
     @include flex($direction: column);
     justify-content: start;
 }

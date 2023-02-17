@@ -100,7 +100,7 @@ function onScroll(e: Event) {
     flex-direction: column-reverse;
     overflow-y: scroll;
     gap: 6px;
-    padding: 0 8px;
+    padding: 0 $page-padding-hor;
     width: 100%;
     padding-top: 80px;
     padding-bottom: 10px;
