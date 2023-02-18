@@ -50,13 +50,6 @@ async function onMainClick() {
 
 
 <style lang="scss" scoped>
-:deep(main) {
-	height: calc(var(--full-vh) - 66px - 60px);
-	@include flex($direction: column, $justify: start);
-	& > * { width: 100%; }
-	@include maxHSize(719px) { height: calc(var(--full-vh) - 54.8px - 48px) }
-}
-
 .functions {
 	flex: 56%;
 	@include flex();

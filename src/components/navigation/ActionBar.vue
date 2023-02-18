@@ -1,16 +1,27 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { useCurrentUser } from 'vuefire'
+
+const router = useRouter()
+const user = useCurrentUser()
+</script>
+
 <template>
 
 	<div class="action-bar">
 		<div class="product"> Echo </div>
-		<div class="profile"> 
-			<span class="material-icons"> account_circle </span>
-		</div>
+		<img
+			class="profile"
+			:src="user?.photoURL || ''" 
+			referrerpolicy=“no-referrer”
+			@click="router.push('/profile')"
+		>
 	</div>
 	
 </template>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 .action-bar {
 	width: 100%;
 	background-color: var(--md-sys-color-surface1);
@@ -23,7 +34,12 @@
 	line-height: 0;
 }
 
-.product {
-	@extend %title-large;
+.product { @extend %title-large }
+
+.profile {
+	width: 30px;
+	border-radius: $full-rounded;
+	background-position: center;
+	background-size: cover;
 }
 </style>

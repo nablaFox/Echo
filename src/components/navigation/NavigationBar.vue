@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { ref } from 'vue'
 import NavSegment from './NavSegment.vue'
 
@@ -9,7 +8,6 @@ const destinations = [
 ]
 
 const selected = ref(0)
-
 </script>
 
 <template>
@@ -28,12 +26,8 @@ const selected = ref(0)
 
 <style lang="scss">
 .bottom-app-bar {
-	@include pos($b: 0, $l: 0);
-	position: fixed;
 	@include flex();
-	width: 100%;
 	height: 60px;
-	z-index: 9995;
 	background-color: var(--md-sys-color-surface2);
 	gap: 40px;
 	@include maxHSize(719px) { height: 48px }

@@ -77,7 +77,7 @@ watch(props, now => {
 
 <template>
 
-    <header class="room-header">
+    <div class="room-header">
         <div class="content">
             <div class="left">
                 <span
@@ -119,7 +119,7 @@ watch(props, now => {
             </div>
         </div>
         <div class="curtain"></div>
-    </header>
+    </div>
  
 </template>
 
@@ -127,20 +127,14 @@ watch(props, now => {
 <style lang="scss" scoped>
 .room-header {
     @include flex($direction: column);
-    width: 100%;
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    padding: 0 10px;
-    user-select: none;
     background-color: var(--md-sys-color-background);
 }
 
 .content {
+    background-color: var(--md-sys-color-background);
     @include flex($justify: space-between);
     width: 100%;
-    height: 62px;
+    height: 65px;
     line-height: 0;
 }
 
@@ -154,7 +148,6 @@ watch(props, now => {
 .name { 
     @extend %title-large;
     width: 70%;
-    user-select: none;
     resize: none;
     padding: 0;
     white-space: nowrap;

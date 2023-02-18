@@ -5,6 +5,7 @@ import { useRoom } from '@/composables/room'
 import { ref } from 'vue'
 import { useScroll } from '@vueuse/core'
 
+import StackLayout from '@/layouts/StackLayout.vue'
 import RoomHeader from '@/components/room/RoomHeader.vue'
 import Controls from '@/components/room/Controls.vue'
 import Message from '@/components/room/Message.vue'
@@ -36,6 +37,7 @@ const { y } = useScroll(wrapper, { behavior: 'smooth' })
 
 function onScroll(e: Event) {
     const target = (e.target as HTMLElement)
+
     if (
         (target.scrollTop
         - target.offsetHeight
@@ -47,13 +49,22 @@ function onScroll(e: Event) {
 
 <template>
 
-    <div class="room" v-if="loaded">
-        <RoomHeader
-            :since="info.since.toDate()"
-            :room-name="data?.name"
-            :total-time="info?.totalTime"
-            @edit="onUpdateName"
-        />
+    <StackLayout 
+        v-if="loaded"
+        ref="layout"
+        padding="0"
+        justify="space-between"
+        header-padding="0 10px"
+        header-fixed
+    >
+        <template #header> 
+            <RoomHeader
+                :since="info.since.toDate()"
+                :room-name="data?.name"
+                :total-time="info?.totalTime"
+                @edit="onUpdateName"
+            />
+        </template>
 
         <div 
             class="message-wrapper"
@@ -76,33 +87,26 @@ function onScroll(e: Event) {
             />
         </div>
 
-        <Controls
-            @send="onSend"
-            :disabled="!info.open"
-            :go-down-btn="y <= -120"
-            @godown="y = 0"
-        />
-    </div>
+        <template #footer> 
+            <Controls
+                :disabled="!info.open"
+                :go-down-btn="y <= -120"
+                @send="onSend"
+                @godown="y = 0"
+            />
+        </template>
+    </StackLayout>
   
 </template>
 
 
 <style lang="scss" scoped>
-.room {
-    width: 100%;
-    height: var(--full-vh);
-    @include flex($direction: column, $justify: space-between);
-    overflow: hidden;
-}
-
 .message-wrapper {
     display: flex;
     flex-direction: column-reverse;
     overflow-y: scroll;
     gap: 6px;
     padding: 0 $page-padding-hor;
-    width: 100%;
-    padding-top: 80px;
     padding-bottom: 10px;
     @include hide-scrollbar();
 }

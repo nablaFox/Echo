@@ -53,7 +53,7 @@ const warn = () => alert("I'm working on it!")
 
 <template>
 
-    <footer class="controls">
+    <div class="controls">
         <div 
             class="controls__top"
             :class="{ disabled: disabled }"
@@ -112,18 +112,15 @@ const warn = () => alert("I'm working on it!")
         >
         </div>
         <div class="keyboard"></div>
-    </footer>
+    </div>
 
 </template>
 
 
 <style lang="scss" scoped>
-.controls { width: 100% }
-
 .keyboard { height: env(keyboard-inset-height, 0px) }
 
 .controls__top {
-    width: 100%;
     display: flex;
     gap: 5px;
     background-color: var(--md-sys-color-surface);

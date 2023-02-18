@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { provide, ref, readonly } from 'vue'
 
+import StackLayout from './StackLayout.vue'
 import ActionBar from '@/components/navigation/ActionBar.vue'
 import BottomAppBar from '@/components/navigation/NavigationBar.vue'
 
@@ -14,32 +15,24 @@ provide('bottomBar', {
     hideBottomBar,
     showBottomBar
 })
-
-// add props such as height
 </script>
 
 
 <template>
-    <div class="main-layout">
-		<ActionBar />
-        <main class="main">
-            <slot />
-        </main>
-        <BottomAppBar v-if="isBottomBar "/>
-    </div>
+
+    <StackLayout 
+        footer-fixed
+        header-padding="10px 0 0 0"
+    >
+        <template #header>
+            <ActionBar />
+        </template>
+
+        <slot />
+
+        <template #footer>
+            <BottomAppBar v-if="isBottomBar "/>
+        </template>
+    </StackLayout>
+
 </template>
-
-
-
-<style lang="scss">
-.main-layout {
-    padding: $page-padding;
-    @include flex($direction: column);
-    justify-content: start;
-}
-
-.main {
-    width: 100%;
-}
-
-</style>
