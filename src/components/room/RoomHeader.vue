@@ -3,11 +3,11 @@ import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFormat } from '@/composables/format'
 import { useUser } from '@/stores/user'
-import { onClickOutside } from '@vueuse/core'
 import dayjs from 'dayjs'
 
 import ToolTip from '@/components/containment/ToolTip.vue'
 import Menu from '../selection/Menu.vue'
+import Editor from '../actions/Editor.vue'
 
 const props = defineProps<{
     roomName: string,
@@ -16,7 +16,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-    (e: 'edit', name: string): void,
+    (e: 'updateName', name: string): void,
 }>()
 
 const userStore = useUser()
@@ -25,37 +25,19 @@ const router = useRouter()
 const clock = ref<number>(0)
 const formatted = format.room(clock)
 const isClosed = computed(() => props.totalTime ? true : false)
-const nameTarget = ref<HTMLInputElement | null>(null)
-const edit = ref(false)
-const inputName = ref('')
+const editor = ref<InstanceType<typeof Editor> | null>(null)
 
 const menuItems = [
     { content: 'Edit', task: onEdit },
     { content: 'Leave', task: onLeave }
 ]
 
-function onEdit() {
-    edit.value = true
-    setTimeout(() => nameTarget.value!.focus(), 0)
-    const end = inputName.value.length
-    nameTarget.value?.setSelectionRange(end, end)
-}
+function onEdit() { editor.value?.triggerEdit() }
 
 async function onLeave() {
     const result = await userStore.leaveRoom()
     if (!result) { alert('Something went wrong!') }
 }
-
-onClickOutside(nameTarget, () => {
-    if (edit.value) {
-        const msg = /[a-zA-Z]/.test(inputName.value) ? 
-            inputName.value : 'New Room'
-        inputName.value = msg
-        nameTarget.value!.scrollLeft = 0
-        emit('edit', msg)
-    }
-    edit.value = false
-})
 
 function updateDiff() {
     const now = dayjs()
@@ -69,8 +51,6 @@ watch(props, now => {
         clearInterval(interval)
         clock.value = now.totalTime
     }
-
-    inputName.value = now.roomName
 }, { immediate: true })
 </script>
 
@@ -86,14 +66,14 @@ watch(props, now => {
                 > 
                     arrow_back
                 </span>
-                <textarea 
+                <Editor
                     class="name"
-                    ref="nameTarget"
-                    rows="1"
-                    :readonly="!edit"
-                    :value="inputName"
-                    @input="e => inputName = (e.target as HTMLInputElement).value"
-                    @keydown.enter.prevent
+                    ref="editor"
+                    fallback="New Room"
+                    :edit-on-click="false"
+                    :initial-value="roomName"
+                    :max-input="60"
+                    @edit="edit => emit('updateName', edit)"
                 />
             </div>
             
@@ -138,12 +118,7 @@ watch(props, now => {
     width: 100%;
 }
 
-.name { 
-    @extend %title-large;
-    padding: 0;
-    white-space: nowrap;
-    width: 80%;
-}
+.name { @extend %title-large; }
 
 .right {
     @include flex();

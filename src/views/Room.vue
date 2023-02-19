@@ -62,7 +62,7 @@ function onScroll(e: Event) {
                 :since="info.since.toDate()"
                 :room-name="data?.name"
                 :total-time="info?.totalTime"
-                @edit="onUpdateName"
+                @update-name="onUpdateName"
             />
         </template>
 
