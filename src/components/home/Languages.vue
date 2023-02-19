@@ -40,15 +40,15 @@ function changeLang(event: any, iso: string) {
 
 <template>
 
-    <Dialog
-        :actions="['Cancel', 'Ok']"
-        headline="Language Selection"
-        @confirm="updateLang"
-        divider
-        ref="dialog"
-    > 
-        <template #supporting> Diversity is good! </template>
-        <template #body>
+    <Teleport to="#app">
+        <Dialog
+            ref="dialog"
+            headline="Language Selection"
+            supporting-text="Diversity is funny!"
+            divider
+            :actions="['Cancel', 'Ok']"
+            @confirm="updateLang"
+        >
             <ListItem
                 v-for="iso, language in languages"
                 :headline="language"
@@ -58,12 +58,11 @@ function changeLang(event: any, iso: string) {
                         type="checkbox" 
                         :checked="user?.languages.includes(iso)"
                         @change.prevent="e => changeLang(e, iso)"
-                        
                     >
                 </template>
             </ListItem>
-        </template>
-    </Dialog>
+        </Dialog>
+    </Teleport>
 
     <span 
         class="material-icons"

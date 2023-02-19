@@ -18,12 +18,13 @@ const shop = () => { alert('shop') }
 
 <template>
    
-    <Dialog
-        headline="Mode Selection"
-        ref="dialog"
-    >
-        <template #body v-if="isPremium">
+    <Teleport to="#app">
+        <Dialog
+            headline="Mode Selection"
+            ref="dialog"
+        >
             <button
+                v-if="isPremium"
                 v-for="mod in [2, 4, 6]"
                 class="mod"
                 :class="[mod === user?.group && 'selected']"
@@ -31,25 +32,25 @@ const shop = () => { alert('shop') }
             >
                 {{ mod }} Guests
             </button>
-        </template>
 
-        <template #body v-else>
-            <button
-                class="mod selected"
-                @click="dialog?.close()"
-            >
-                2 Guests
-            </button>
+            <template v-else>
+                <button
+                    class="mod selected"
+                    @click="dialog?.close()"
+                >
+                    2 Guests
+                </button>
 
-            <div
-                class="premium"
-                @click="shop"
-            >
-                <div class="premium__title"> 4/6 Guests </div>
-                <div class="premium__price"> $2,50 </div>
-            </div>
-        </template>
-    </Dialog>
+                <div
+                    class="premium"
+                    @click="shop"
+                >
+                    <div class="premium__title"> 4/6 Guests </div>
+                    <div class="premium__price"> $2,50 </div>
+                </div>
+            </template>
+        </Dialog>
+    </Teleport>
 
     <span 
         class="material-icons"

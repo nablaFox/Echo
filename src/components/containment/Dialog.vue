@@ -3,10 +3,11 @@ import MdButton from '@/components/actions/MdButton.vue'
 import { ref } from 'vue'
 
 defineProps<{
-    actions?: string[],
-    icon?: string,
-    headline?: string,
-    divider?: boolean,
+    actions?: string[]
+    icon?: string
+    headline?: string
+    divider?: boolean
+    supportingText?: string
 }>()
 const emit = defineEmits(['confirm', 'cancel'])
 
@@ -37,19 +38,18 @@ defineExpose({ open, close })
 
                     <h4 class="headline"> {{ headline }} </h4>
 
-                    <div class="supporting-text"
-                        v-if="$slots.supporting"
-                        :style=" { marginBottom: $slots.body ? '8px' : '' }"
+                    <div 
+                        class="supporting-text"
+                        v-if="supportingText"
                     >
-                        <slot name="supporting" />
+                        {{ supportingText }}
                     </div>
 
                     <div 
                         class="body"
                         :class="{ 'w-divider': divider }"
-                        v-if="$slots.body"
                     >
-                        <slot name="body" />
+                        <slot />
                     </div>
                 </div>
 
@@ -68,7 +68,6 @@ defineExpose({ open, close })
             </form>
         </div>
     </Transition>
-
    
 </template>
 
@@ -84,12 +83,12 @@ defineExpose({ open, close })
 }
  
 .mask {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
-    z-index: 9998;
+    z-index: 9901;
     background-color: #00000066;
     @include flex()
 }
@@ -112,6 +111,8 @@ defineExpose({ open, close })
     gap: 16px;
     padding-bottom: 24px;
 }
+
+.supporting-text { margin-bottom: 8px }
 
 .body {
     width: 100%;
