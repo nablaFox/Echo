@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
+
 import ListItem from '../containment/ListItem.vue'
+import IconButton from '../actions/IconButton.vue'
 
 export interface Item {
     content: string
@@ -10,17 +12,17 @@ export interface Item {
     task: Function
 }
 
-const props = defineProps<{ 
-    items: Array<Item>,
-    width?: string,
-    gap?: number,
+defineProps<{ 
+    items: Array<Item>
+    width?: string
+    gap?: number
     blocked?: boolean
+    icon?: string
 }>()
 
 const active = ref(false)
 const target = ref<HTMLElement | null>(null)
 
-const isActive = computed(() => props.blocked ? false: active.value)
 onClickOutside(target, 
     () => (active.value = false), 
     { ignore: ['.opener'] }
@@ -31,18 +33,18 @@ onClickOutside(target,
 <template>
 
     <div class="menu__container">
-        <button 
-            class="opener" 
+        <IconButton
+            class="opener"
+            :icon="icon || 'more_vert'"
             @click="active = !active"
-        >
-            <slot />
-        </button>
+            :style="{ pointerEvents: blocked ? 'none' : 'all' }"
+        />
         
         <Transition>
             <div 
                 class="menu"
                 ref="target"
-                v-if="isActive"
+                v-if="!blocked && active"
                 :style="{ 
                     width: width,
                     top: `${100 + (gap || 0)}%`
@@ -56,7 +58,6 @@ onClickOutside(target,
                 />
             </div>    
         </Transition>
-        
     </div>
     
 </template>

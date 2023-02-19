@@ -8,7 +8,6 @@ import dayjs from 'dayjs'
 
 import ToolTip from '@/components/containment/ToolTip.vue'
 import Menu from '../selection/Menu.vue'
-import IconButton from '../actions/IconButton.vue'
 
 const props = defineProps<{
     roomName: string,
@@ -53,9 +52,9 @@ onClickOutside(nameTarget, () => {
             inputName.value : 'New Room'
         inputName.value = msg
         nameTarget.value!.scrollLeft = 0
-        edit.value = false
         emit('edit', msg)
     }
+    edit.value = false
 })
 
 function updateDiff() {
@@ -106,16 +105,10 @@ watch(props, now => {
                 </ToolTip>
                 <Menu
                     width="150px"
-                    :items="menuItems"
                     :gap="20"
+                    :items="menuItems"
                     :blocked="isClosed"
-                >
-                    <IconButton 
-                        icon="more_vert" 
-                        as="span"
-                        :style="{ pointerEvents: isClosed ? 'none' : 'all' }"
-                    />
-                </Menu>
+                />
             </div>
         </div>
         <div class="curtain"></div>
@@ -147,11 +140,8 @@ watch(props, now => {
 
 .name { 
     @extend %title-large;
-    width: 70%;
-    resize: none;
     padding: 0;
     white-space: nowrap;
-    @include hide-scrollbar();
     width: 80%;
 }
 
