@@ -46,10 +46,13 @@ export function useFormat() {
 
     const timestamp = (date: Date) => dayjs(date).format('HH:mm')
 
+    const registration = (date: Date) => dayjs(date).format('DD/MM/YYYY')
+
     return {
         room,
         preview,
         divider,
-        timestamp
+        timestamp,
+        registration
     }
 }

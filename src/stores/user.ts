@@ -2,13 +2,14 @@ import { defineStore } from "pinia"
 import { useDocument, useCollection, useFirestore, getCurrentUser } from "vuefire"
 import { collection, doc, setDoc, updateDoc, deleteDoc, getDoc, query, orderBy, limit } from "firebase/firestore"
 import { ref, computed } from "vue"
-import type { DocumentData } from 'firebase/firestore'
+import type { DocumentData, Timestamp } from 'firebase/firestore'
 
 interface IUserData {
-    username: string,
-    bio: string,
-    email: string,
-    languages?: string[],
+    username: string
+    bio: string
+    email: string
+    languages?: string[]
+    addedAt: Timestamp
     group: 2
 }
 
@@ -21,8 +22,9 @@ export const useUser = defineStore('user', () => {
     const inTheRoom = computed(() => currentRoom.value !== null && currentRoom.value.id !== undefined)
     const isWaiting = computed(() => roomInfo.value?.isWaiting as boolean)
     const exRooms = ref([])
-    const exRoomsLimit = ref(30)
+    const exRoomsLimit = ref(10)
     const token = ref('')
+    
 
     const load = async () => {
         if (isLoaded.value) return
@@ -54,7 +56,6 @@ export const useUser = defineStore('user', () => {
     const remove = async () => {
         const userRef = doc(db, 'users', user.value?.id)
         await deleteDoc(userRef)
-        await (await getCurrentUser())!.delete()
     }
 
     const loadExRooms = async () => {

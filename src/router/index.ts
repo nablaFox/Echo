@@ -12,16 +12,18 @@ router.beforeEach(async (to, from, next) => {
 	const { isLogin } = useAuth()
 	const userStore = useUser()
 
-	if (
-		!await isLogin() 
-		&& to.name !== 'SignUp'
-		&& to.name !== 'SignIn'
-	) { return next({ name: 'SignUp' }) }
+	if (!await isLogin()) {
+		if (
+			to.name !== 'SignUp'
+			&& to.name !== 'SignIn'
+		) { return next({ name: 'SignUp' })}
+
+		return next()
+	}	
 	// check if is logged
 
 	try {
 		await userStore.load()
-
 		if (
 			userStore.inTheRoom
 			&& to.name !== 'Room'

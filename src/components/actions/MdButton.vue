@@ -49,7 +49,7 @@ const isRouterLink = computed(() => props.as === 'router-link')
 
 <style lang="scss" scoped>
 .button {
-    border-radius: $full-rounded;
+    border-radius: 20px;
     overflow: hidden;
     height: 40px;
     padding: 0 24px;

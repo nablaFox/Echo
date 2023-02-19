@@ -1,6 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup, type Auth } from "firebase/auth"
 import { getCurrentUser, useFirebaseAuth } from "vuefire"
 import { useUser } from "@/stores/user"
+import { Timestamp } from "firebase/firestore"
 
 export function useAuth() {
     const auth = useFirebaseAuth() as Auth
@@ -26,6 +27,7 @@ export function useAuth() {
             username: username || user.displayName || 'listener',
             email: user.email!,
             languages: languages,
+            addedAt: Timestamp.now(),
             bio: bio || 'Silence is a true friend who never betrays',
             group: 2
         })
