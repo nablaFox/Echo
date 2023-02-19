@@ -41,7 +41,6 @@ function format(n: number, name: string) {
     @include flex($justify: space-between);
     padding: 0 20px;
     height: 77px;
-    user-select: none;
 
     @include maxHSize(719px) { height: 61.6px; }
 }

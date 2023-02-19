@@ -27,7 +27,6 @@ import Modes from './Modes.vue'
     height: 265px;
     width: 42px;
     padding: 12px 0px;
-    user-select: none;
 
     @include maxHSize(719px) { height: 212px }
 

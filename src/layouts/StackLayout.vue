@@ -99,7 +99,7 @@ const pagePadding = computed(() => {
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 9999;
+        z-index: 9900;
     }
 }
 
@@ -109,7 +109,7 @@ const pagePadding = computed(() => {
     &.fixed {
         position: fixed;
         bottom: 0;
-        z-index: 9999;
+        z-index: 9900;
         left: 0;
     }
 }

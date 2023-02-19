@@ -35,7 +35,7 @@ defineExpose({ open, close })
                         {{ icon }}
                     </div>
 
-                    <h2 class="headline"> {{ headline }} </h2>
+                    <h4 class="headline"> {{ headline }} </h4>
 
                     <div class="supporting-text"
                         v-if="$slots.supporting"
@@ -100,7 +100,6 @@ defineExpose({ open, close })
     background-color: var(--md-sys-color-surface);
     box-shadow: var(--md-sys-elevation2);
     padding: 24px;
-    user-select: none;
 }
 
 .actions {

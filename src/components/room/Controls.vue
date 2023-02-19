@@ -183,11 +183,7 @@ const warn = () => alert("I'm working on it!")
 }
 
 .textarea {
-    resize: none;
-    padding: 0px 0;
     max-height: 100px;
-    scrollbar-width: thin;
     color: var(--md-sys-color-on-surface);
-    @include hide-scrollbar()
 }
 </style>

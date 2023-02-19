@@ -121,8 +121,6 @@ function onDelete() {
     @extend %body-large;
     font-size: 17.4px;
     line-height: 1.2;
-    user-select: none;
-   
 }
 
 .username {
@@ -190,7 +188,6 @@ function onDelete() {
     color: var(--md-sys-color-on-surface-variant);
     border-radius: $medium-rounded;
     align-self: center;
-    user-select: none;
     z-index: 1;
 }
 

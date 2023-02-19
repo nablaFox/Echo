@@ -29,7 +29,6 @@ const user = useCurrentUser()
 	border-radius: 8px;
 	padding: 0 10px;
 	height: 56px;
-	user-select: none;
 	@include maxHSize(719px) { height: 52px };
 	line-height: 0;
 }
