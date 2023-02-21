@@ -21,7 +21,7 @@ const toggleDark = useToggle(isDark)
 
 <template>
 
-    <Teleport to="#app">
+    <Teleport to="body">
         <Dialog
             ref="dialog"
             headline="Settings"

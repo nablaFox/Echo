@@ -18,7 +18,7 @@ const shop = () => { alert('shop') }
 
 <template>
    
-    <Teleport to="#app">
+    <Teleport to="body">
         <Dialog
             headline="Mode Selection"
             ref="dialog"
