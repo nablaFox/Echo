@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import MdButton from '@/components/actions/MdButton.vue'
 import { ref } from 'vue'
+import MdButton from '@/components/actions/MdButton.vue'
+import Icon from '../actions/Icon.vue'
 
 defineProps<{
     actions?: string[]
@@ -29,12 +30,11 @@ defineExpose({ open, close })
                     class="content"
                     :style="{ alignItems: icon ? 'center' : 'start' }"
                 >
-                    <div 
-                        class="icon material-icons"
+                    <Icon
                         v-if="icon"
-                    >
-                        {{ icon }}
-                    </div>
+                        class="icon"
+                        :icon="icon"
+                    /> 
 
                     <h4 class="headline"> {{ headline }} </h4>
 

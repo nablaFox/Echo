@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useUser } from '@/stores/user'
 
 import Dialog from '../containment/Dialog.vue'
+import Icon from '../actions/Icon.vue'
 
 const userStore = useUser()
 const { user } = storeToRefs(userStore)
@@ -52,12 +53,10 @@ const shop = () => { alert('shop') }
         </Dialog>
     </Teleport>
 
-    <span 
-        class="material-icons"
+    <Icon 
+        icon="person"
         @click="dialog?.open()"
-    >
-        person
-    </span>
+    />
 
 </template>
 

@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useUser } from '@/stores/user'
+
 import Dialog from '../containment/Dialog.vue'
 import ListItem from '../containment/ListItem.vue'
-import { useUser } from '@/stores/user'
-import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import Icon from '../actions/Icon.vue'
 
 const userStore = useUser()
 const { user } = storeToRefs(userStore)
@@ -64,12 +66,10 @@ function changeLang(event: any, iso: string) {
         </Dialog>
     </Teleport>
 
-    <span 
-        class="material-icons"
-        @click="dialog?.open()"
-    > 
-        language
-    </span>
+    <Icon 
+        icon="language"
+        @click="dialog?.open()" 
+    />
 
 </template>
 

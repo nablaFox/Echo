@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
+import Icon from './Icon.vue'
 
 export interface Props {
     as?: string
@@ -10,32 +11,20 @@ export interface Props {
     href?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
-    as: 'button'
-})
+const props = withDefaults(defineProps<Props>(), { as: 'button' })
 const emit = defineEmits(['change'])
 
 const selected = ref(false)
 
-const IconVariant = computed(() => {
-    if (selected.value) {
-        return 'material-icons'
-    } else if (props.iconVariant) {
-        return `material-icons-${props.iconVariant}`
-    } else {
-        return 'material-icons-outlined'
-    }
-})
+const isRegularLink = computed(() => props.as === 'a')
+const isRouterLink = computed(() => props.as === 'router-link')
 
 function onClick() {
     if (props.toggleable) {
-        selected.value = !selected.value;
-        emit('change', selected.value);
+        selected.value = !selected.value
+        emit('change', selected.value)
     }
 }
-
-const isRegularLink = computed(() => props.as === 'a')
-const isRouterLink = computed(() => props.as === 'router-link')
 </script>
 
 
@@ -53,12 +42,11 @@ const isRouterLink = computed(() => props.as === 'router-link')
         @click="onClick"
         
     >
-        <span
-            style="font-size: 26px;"
-            :class="IconVariant"
-        >
-            {{ icon }}
-        </span>
+        <Icon
+            size="26px"
+            :icon="icon"
+            :variant="iconVariant"
+        />
     </component>
 
 </template>

@@ -2,7 +2,7 @@
 
 import Languages from './Languages.vue'
 import Modes from './Modes.vue'
-import Settings from './Settings.vue';
+import Settings from './Settings.vue'
 
 </script>
 

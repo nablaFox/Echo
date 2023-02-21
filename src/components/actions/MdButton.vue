@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
+import Icon from './Icon.vue'
 
 export interface Props {
     as?: string
@@ -30,12 +31,12 @@ const isRouterLink = computed(() => props.as === 'router-link')
         :href="isRegularLink ? href : null"
         :to="isRouterLink ? href : null"
     >
-        <span
-            class="material-icons-outlined icon"
+        <Icon
             v-if="icon"
-        > 
-            {{ icon }}
-        </span>
+            class="icon"
+            variant="outlined"
+            :icon="icon"
+        />
 
         <span 
             class="button__label"

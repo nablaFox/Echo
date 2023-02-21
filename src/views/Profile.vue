@@ -44,7 +44,7 @@ async function onDelete() {
         <template #header>
             <button 
                 class="material-icons" 
-                @click="e => router.go(-1)"
+                @click="router.go(-1)"
             >
                 arrow_back
             </button>

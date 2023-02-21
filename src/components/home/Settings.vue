@@ -5,6 +5,7 @@ import { useDark, useToggle } from '@vueuse/core'
 import Dialog from '../containment/Dialog.vue'
 import Menu from '../selection/Menu.vue'
 import IconButton from '../actions/IconButton.vue'
+import Icon from '../actions/Icon.vue'
 
 const dialog = ref<InstanceType<typeof Dialog> | null>(null)
 
@@ -32,7 +33,7 @@ const toggleDark = useToggle(isDark)
                 <Menu :items="menuItems">
                     <div class="selection">
                         Always
-                        <span class="material-icons">arrow_drop_down</span>
+                        <Icon icon="arrow_drop_down" />
                     </div>
                 </Menu>
                 Notifications
@@ -55,12 +56,10 @@ const toggleDark = useToggle(isDark)
         </Dialog>
     </Teleport>
 
-    <span 
-        class="material-icons"
+    <Icon 
+        icon="settings"
         @click="dialog?.open()"
-    >
-        settings
-    </span>
+    />
 
 </template>
 
