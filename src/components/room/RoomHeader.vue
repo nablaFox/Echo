@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import { useFormat } from '@/composables/format'
 import { useUser } from '@/stores/user'
 import dayjs from 'dayjs'
@@ -21,7 +20,6 @@ const emit = defineEmits<{
 
 const userStore = useUser()
 const format = useFormat()
-const router = useRouter()
 const clock = ref<number>(0)
 const formatted = format.room(clock)
 const isClosed = computed(() => props.totalTime ? true : false)
@@ -59,13 +57,13 @@ watch(props, now => {
     <div class="room-header">
         <div class="content">
             <div class="left">
-                <span
+                <RouterLink
                     v-if="isClosed"
-                    @click="router.push('/')"
+                    to="/"
                     class="material-icons exit"
-                > 
+                >
                     arrow_back
-                </span>
+                </RouterLink>
                 <Editor
                     class="name"
                     ref="editor"

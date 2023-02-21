@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { useCurrentUser } from 'vuefire'
 
-const router = useRouter()
 const user = useCurrentUser()
 </script>
 
@@ -10,12 +8,13 @@ const user = useCurrentUser()
 
 	<div class="action-bar">
 		<div class="product"> Echo </div>
-		<img
-			class="profile"
-			:src="user?.photoURL || ''" 
-			referrerpolicy=“no-referrer”
-			@click="router.push('/profile')"
-		>
+		<RouterLink to="/profile">
+			<img
+				class="profile"
+				:src="user?.photoURL || ''" 
+				referrerpolicy=“no-referrer”
+			>
+		</RouterLink>
 	</div>
 	
 </template>
