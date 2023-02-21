@@ -55,11 +55,13 @@ defineExpose({ open, close })
 
                 <div class="actions" v-if="actions">
                     <MdButton
+                        v-if="actions[0]"
                         variant="text" 
                         :label="actions[0]"
                         @click="emit('cancel'); close()"
                     />
                     <MdButton 
+                        v-if="actions[1]"
                         variant="text" 
                         :label="actions[1]"
                         @click="emit('confirm'); close()"
@@ -95,7 +97,7 @@ defineExpose({ open, close })
 
 .dialog {
     border-radius: $extra-large-rounded;
-    width: 70vw; // temporany
+    min-width: 70vw; // temporany
     background-color: var(--md-sys-color-surface);
     box-shadow: var(--md-sys-elevation2);
     padding: 24px;
@@ -116,6 +118,7 @@ defineExpose({ open, close })
 
 .body {
     width: 100%;
+    @include hide-scrollbar();
     &.w-divider {
         border-color: var(--md-sys-color-outline-variant);
         border-width: 1px 0 1px 0;

@@ -70,7 +70,7 @@ export const useUser = defineStore('user', () => {
 
     const searchRoom = async () => {
         try {
-            const result = await fetch('http://localhost:3000/hall', {
+            const result = await fetch('https://echoend1-afinex04.b4a.run/hall', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export const useUser = defineStore('user', () => {
 
     const leaveRoom = async () => {
         try {
-            const result = await fetch(`http://localhost:3000/rooms/${currentRoom.value.id}`, {
+            const result = await fetch(`https://echoend1-afinex04.b4a.run/rooms/${currentRoom.value.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

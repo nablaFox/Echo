@@ -2,6 +2,7 @@
 
 import Languages from './Languages.vue'
 import Modes from './Modes.vue'
+import Settings from './Settings.vue';
 
 </script>
 
@@ -11,7 +12,7 @@ import Modes from './Modes.vue'
     <div class="option-bar">
         <Modes />
         <Languages />
-        <span class="material-icons"> settings </span>
+        <Settings />
     </div>
 
 
@@ -29,6 +30,5 @@ import Modes from './Modes.vue'
     padding: 12px 0px;
 
     @include maxHSize(719px) { height: 212px }
-
 }
 </style>

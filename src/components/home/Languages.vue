@@ -78,8 +78,6 @@ function changeLang(event: any, iso: string) {
 :deep(.body) {
     max-height: 23vh;
     overflow: scroll;
-    scrollbar-width: none;
-    &::-webkit-scrollbar { display: none }
 }
 
 .list-item:active::before { opacity: 0 }

@@ -33,12 +33,17 @@ onClickOutside(target,
 <template>
 
     <div class="menu__container">
-        <IconButton
+        <div 
             class="opener"
-            :icon="icon || 'more_vert'"
             @click="active = !active"
-            :style="{ pointerEvents: blocked ? 'none' : 'all' }"
-        />
+        >
+            <slot>
+                <IconButton
+                    :icon="icon || 'more_vert'"
+                    :style="{ pointerEvents: blocked ? 'none' : 'all' }"
+                />
+            </slot>
+        </div>
         
         <Transition>
             <div 
@@ -64,7 +69,10 @@ onClickOutside(target,
 
 
 <style lang="scss" scoped>
-.menu__container { position: relative }
+.menu__container { 
+    position: relative;
+    width: fit-content;
+}
 
 .menu {
     box-shadow: var(--md-sys-elevation2);
