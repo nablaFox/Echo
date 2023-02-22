@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import { useDocument, useCollection, useFirestore, getCurrentUser } from "vuefire"
 import { collection, doc, setDoc, updateDoc, deleteDoc, getDoc, query, orderBy, limit } from "firebase/firestore"
 import { ref, computed } from "vue"
-import type { DocumentData, Timestamp } from 'firebase/firestore'
+import type { DocumentData, Timestamp, OrderByDirection } from 'firebase/firestore'
 
 interface IUserData {
     username: string
@@ -21,8 +21,9 @@ export const useUser = defineStore('user', () => {
     const currentRoom = computed<DocumentData>(() => roomInfo.value?.currentRoom ?? null)
     const inTheRoom = computed(() => currentRoom.value !== null && currentRoom.value.id !== undefined)
     const isWaiting = computed(() => roomInfo.value?.isWaiting as boolean)
-    const exRooms = ref([])
+    const exRooms = ref<Array<DocumentData>>([])
     const exRoomsLimit = ref(10)
+    const exRoomsOrder = ref<OrderByDirection>('desc')
     const token = ref('')
     
 
@@ -61,12 +62,13 @@ export const useUser = defineStore('user', () => {
     const loadExRooms = async () => {
         const roomRefs = collection(db, `users/${user.value!.id}/exRooms`)
         const _query = computed(
-            () => query(roomRefs, orderBy('addedAt', 'desc'), limit(exRoomsLimit.value))
+            () => query(roomRefs, orderBy('addedAt', exRoomsOrder.value), limit(exRoomsLimit.value))
         )
         await useCollection(_query, { target: exRooms }).promise.value
     }
 
     const loadMoreExRooms = (delta: number) => exRoomsLimit.value += delta
+    const orderExRooms = (order: OrderByDirection) => exRoomsOrder.value = order 
 
     const searchRoom = async () => {
         try {
@@ -103,12 +105,14 @@ export const useUser = defineStore('user', () => {
         isWaiting,
         exRooms,
         exRoomsLimit,
+        exRoomsOrder,
         load,
         add,
         update,
         remove,
         loadExRooms,
         loadMoreExRooms,
+        orderExRooms,
         searchRoom,
         leaveRoom,
     }

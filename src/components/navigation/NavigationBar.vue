@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import NavSegment from './NavSegment.vue'
 
-const destinations = [
-	{ icon: 'graphic_eq', href: '/', id: 0 },
-	{ icon: 'access_time', href: '/exRooms', id: 1}
-]
+const route = useRoute()
 
-const selected = ref(0)
+const destinations = [
+	{ icon: 'graphic_eq', href: '/' },
+	{ icon: 'access_time', href: '/exRooms' }
+]
 </script>
 
 <template>
-
+	
 	<div class="bottom-app-bar">
 		<NavSegment
 			v-for="dest in destinations"
+			:href="dest.href"
 			:icon="dest.icon"
-			:class="{ active: selected === dest.id }"
-            @select="selected = dest.id"
+			:class="{ active: route.fullPath === dest.href }"
 		/>
 	</div>
 

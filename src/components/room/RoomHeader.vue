@@ -2,11 +2,13 @@
 import { ref, watch, computed } from 'vue'
 import { useFormat } from '@/composables/format'
 import { useUser } from '@/stores/user'
+import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
 
 import ToolTip from '@/components/containment/ToolTip.vue'
 import Menu from '../selection/Menu.vue'
 import Editor from '../actions/Editor.vue'
+import Icon from '../actions/Icon.vue'
 
 const props = defineProps<{
     roomName: string,
@@ -20,6 +22,8 @@ const emit = defineEmits<{
 
 const userStore = useUser()
 const format = useFormat()
+const router = useRouter()
+
 const clock = ref<number>(0)
 const formatted = format.room(clock)
 const isClosed = computed(() => props.totalTime ? true : false)
@@ -57,13 +61,11 @@ watch(props, now => {
     <div class="room-header">
         <div class="content">
             <div class="left">
-                <RouterLink
+                <Icon
                     v-if="isClosed"
-                    to="/"
-                    class="material-icons exit"
-                >
-                    arrow_back
-                </RouterLink>
+                    icon="arrow_back"
+                    @click="router.back()"
+                />
                 <Editor
                     class="name"
                     ref="editor"

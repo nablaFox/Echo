@@ -45,6 +45,11 @@ router.beforeEach(async (to, from, next) => {
 		) next({ name: 'Home' })
 		// since is logged, redirect the user
 
+		else if (
+			to.name === 'Lobby'
+			&& from.name === 'Room'
+		) next({ name: 'Home' })
+
 		else next()
 	}
 	catch {

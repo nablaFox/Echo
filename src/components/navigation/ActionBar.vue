@@ -1,20 +1,31 @@
 <script setup lang="ts">
 import { useCurrentUser } from 'vuefire'
+import { useRoute } from 'vue-router'
 
 const user = useCurrentUser()
+const route = useRoute()
 </script>
 
 <template>
 
 	<div class="action-bar">
 		<div class="product"> Echo </div>
-		<RouterLink to="/profile">
+		<RouterLink 
+			v-if="route.name === 'Home'"
+			to="/profile"
+		>
 			<img
 				class="profile"
 				:src="user?.photoURL || ''" 
 				referrerpolicy=“no-referrer”
 			>
 		</RouterLink>
+		<span
+			v-else
+			class="material-icons"
+		>
+			search
+		</span>
 	</div>
 	
 </template>

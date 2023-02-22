@@ -4,6 +4,7 @@ import SignUp from '@/views/SignUp.vue'
 import Lobby from '@/views/Lobby.vue'
 import Room from '@/views/Room.vue'
 import Profile from '@/views/Profile.vue'
+import ExRooms from '@/views/ExRooms.vue'
 
 import Main from '@/layouts/Main.vue'
 
@@ -40,5 +41,11 @@ export default [
         path: '/profile',
         name: 'Profile',
         component: Profile
+    },
+    {
+        path: '/exRooms',
+        name: 'ExRooms',
+        meta: { layout: Main },
+        component: ExRooms,
     }
 ]

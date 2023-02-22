@@ -13,7 +13,7 @@ defineEmits(['select'])
 <template>
 
     <div class="segment">
-        <router-link
+        <RouterLink
             :to="href || '/'"
             :class="{ circular: circular }"
             class="segment__btn"
@@ -22,7 +22,7 @@ defineEmits(['select'])
             <span class="material-icons">
                 {{ icon }}
             </span>
-        </router-link>
+        </RouterLink>
 
         <div 
             class="segment__label" 

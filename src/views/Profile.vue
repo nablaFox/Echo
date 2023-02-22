@@ -86,7 +86,7 @@ async function onDelete() {
             </div>
             
             <div class="container"> 
-                Member since {{ format.registration(user?.addedAt.toDate()) }} 
+                Member since {{ format.fullDate(user?.addedAt.toDate()) }} 
             </div>
         </main>
 
