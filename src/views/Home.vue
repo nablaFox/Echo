@@ -3,7 +3,6 @@ import { useRouter } from 'vue-router'
 import { useUser } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
-import Main from '@/layouts/Main.vue'
 import MainButton from '@/components/home/MainButton.vue'
 import OptionBar from '@/components/home/OptionBar.vue'
 import UserInfo from '@/components/home/UserInfo.vue'
@@ -24,7 +23,7 @@ async function onMainClick() {
 
 <template>
 
-	<Main>
+	<main>
 		<div class="functions">
 			<MainButton @click="onMainClick"/>
 			<OptionBar />
@@ -44,12 +43,18 @@ async function onMainClick() {
 				<Recents :rooms="exRooms"/>
 			</div>
 		</div>
-	</Main>
+	</main>
 
 </template>
 
 
 <style lang="scss" scoped>
+main {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
 .functions {
 	flex: 56%;
 	@include flex();

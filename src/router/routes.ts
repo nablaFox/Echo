@@ -5,10 +5,13 @@ import Lobby from '@/views/Lobby.vue'
 import Room from '@/views/Room.vue'
 import Profile from '@/views/Profile.vue'
 
+import Main from '@/layouts/Main.vue'
+
 export default [
     {
         path: '/',
         name: 'Home',
+        meta: { layout: Main },
         component: Home,
     },
     {

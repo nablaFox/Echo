@@ -49,53 +49,55 @@ function onScroll(e: Event) {
 
 <template>
 
-    <StackLayout 
-        v-if="loaded"
-        ref="layout"
-        padding="0"
-        justify="space-between"
-        header-padding="0 10px"
-        header-fixed
-    >
-        <template #header> 
-            <RoomHeader
-                :since="info.since.toDate()"
-                :room-name="data?.name"
-                :total-time="info?.totalTime"
-                @update-name="onUpdateName"
-            />
-        </template>
-
-        <div 
-            class="message-wrapper"
-            ref="wrapper"
-            @scroll="onScroll"
+    <Transition>
+        <StackLayout 
+            v-if="loaded"
+            ref="layout"
+            padding="0"
+            justify="space-between"
+            header-padding="0 10px"
+            header-fixed
         >
-            <Message
-                v-for="msg, index in messages"
-                :origin="user?.id === msg.sender.id ? 'sender' : 'recipient'"
-                :username="msg.sender.username"
-                :menu-disabled="!info.open"
-                :date="msg.timestamp.toDate()"
-                :text="msg.text"
-                :prev-date="
-                    index < messages!.length - 1 ? 
-                    messages![index + 1].timestamp.toDate() : null
-                "
-                @delete="onDeleteMsg(msg.id)"
-                @update="text => onUpdateMsg(msg.id, text)"
-            />
-        </div>
+            <template #header> 
+                <RoomHeader
+                    :since="info.since.toDate()"
+                    :room-name="data?.name"
+                    :total-time="info?.totalTime"
+                    @update-name="onUpdateName"
+                />
+            </template>
 
-        <template #footer> 
-            <Controls
-                :disabled="!info.open"
-                :go-down-btn="y <= -120"
-                @send="onSend"
-                @godown="y = 0"
-            />
-        </template>
-    </StackLayout>
+            <div 
+                class="message-wrapper"
+                ref="wrapper"
+                @scroll="onScroll"
+            >
+                <Message
+                    v-for="msg, index in messages"
+                    :origin="user?.id === msg.sender.id ? 'sender' : 'recipient'"
+                    :username="msg.sender.username"
+                    :menu-disabled="!info.open"
+                    :date="msg.timestamp.toDate()"
+                    :text="msg.text"
+                    :prev-date="
+                        index < messages!.length - 1 ? 
+                        messages![index + 1].timestamp.toDate() : null
+                    "
+                    @delete="onDeleteMsg(msg.id)"
+                    @update="text => onUpdateMsg(msg.id, text)"
+                />
+            </div>
+
+            <template #footer> 
+                <Controls
+                    :disabled="!info.open"
+                    :go-down-btn="y <= -120"
+                    @send="onSend"
+                    @godown="y = 0"
+                />
+            </template>
+        </StackLayout>
+    </Transition>
   
 </template>
 
@@ -111,5 +113,16 @@ function onScroll(e: Event) {
     @include hide-scrollbar();
 }
 
-:global(.blur-leave-active) {  all: initial!important }
+.v-enter-active,
+.v-leave-active {
+    transition-property: opacity, filter;
+    transition-duration: .4s;
+    transition-timing-function: ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0; 
+    filter: blur(1rem);
+}
 </style>

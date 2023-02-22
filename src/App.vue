@@ -16,37 +16,9 @@ if ("virtualKeyboard" in navigator) {
 <template>
 
   	<RouterView v-slot="{ Component, route }">
-		<Transition :name="route.meta.transition as string || 'fade'">
+		<component :is="route.meta.layout || 'div'">
 			<component :is="Component" />
-		</Transition>
+		</component>
 	</RouterView>
 
 </template>
-
-<style lang="scss">
-
-.fade-enter-active,
-.fade-leave-active {
-	position: absolute; // avoiding overlap
-	width: 100%;
-	height: 100%;
-	transition: opacity .2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  	opacity: 0;
-}
-
-.blur-enter-active,
-.blur-leave-active {
-    transition: all 0.4s
-}
-
-.blur-enter-from,
-.blur-leave-to {
-    opacity: 0; 
-    filter: blur(1rem);
-}
-
-</style>
