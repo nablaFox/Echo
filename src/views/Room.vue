@@ -1,49 +1,35 @@
 <script setup lang="ts">
-import { useUser } from '@/stores/user'
-import { storeToRefs } from 'pinia'
-import { useRoom } from '@/composables/room'
 import { ref } from 'vue'
-import { useScroll } from '@vueuse/core'
+import { useUser } from '@/stores/user'
+import { useRoom } from '@/composables/room'
 
 import StackLayout from '@/layouts/StackLayout.vue'
+import Scroller from '@/layouts/Scroller.vue'
 import RoomHeader from '@/components/room/RoomHeader.vue'
 import Controls from '@/components/room/Controls.vue'
 import Message from '@/components/room/Message.vue'
 
 const props = defineProps<{ id: string }>()
 
-const userStore = useUser()
-const { user } = storeToRefs(userStore)
-const {
-    data,
+const { user } = useUser()
+const room = useRoom(props.id)
+const { 
     messages,
-    sendMessage, 
-    info, 
-    loaded, 
-    loadMore, 
     messagesLimit,
-    updateMessage,
-    deleteMessage,
-    update
-} = useRoom(props.id)
+    loaded,
+    info,
+    data
+} = room
 
-const onSend = (text: string) => sendMessage(text, user.value!.id, user.value!.username)
-const onUpdateMsg = (id: string, text: string) => updateMessage(id, text)
-const onDeleteMsg = (id: string) => deleteMessage(id)
-const onUpdateName = (name: string) => update({ name: name })
+const scroller = ref<InstanceType<typeof Scroller> | null>(null)
 
-const wrapper = ref<HTMLElement | null>(null)
-const { y } = useScroll(wrapper, { behavior: 'smooth' })
+const onSend = (text: string) => room.sendMessage(text, user!.id, user!.username)
+const onDeleteMsg = (id: string) => room.deleteMessage(id)
+const onUpdateName = (name: string) => room.update({ name: name })
 
-function onScroll(e: Event) {
-    const target = (e.target as HTMLElement)
-
-    if (
-        (target.scrollTop
-        - target.offsetHeight
-        + target.scrollHeight) <= 160
-        && messagesLimit.value < (messages.value?.length as number) + 1
-    ) { loadMore(80) }
+const onScroll = () => {
+    (messagesLimit.value < (messages.value?.length as number) + 1)
+    && room.loadMore(80)
 }
 </script>
 
@@ -67,13 +53,15 @@ function onScroll(e: Event) {
                 />
             </template>
 
-            <div 
+            <Scroller
+                ref="scroller"
                 class="message-wrapper"
-                ref="wrapper"
-                @scroll="onScroll"
+                :top-offset="160"
+                @arrived-top="onScroll"
             >
                 <Message
                     v-for="msg, index in messages"
+                    :key="index"
                     :origin="user?.id === msg.sender.id ? 'sender' : 'recipient'"
                     :username="msg.sender.username"
                     :menu-disabled="!info.open"
@@ -84,16 +72,15 @@ function onScroll(e: Event) {
                         messages![index + 1].timestamp.toDate() : null
                     "
                     @delete="onDeleteMsg(msg.id)"
-                    @update="text => onUpdateMsg(msg.id, text)"
                 />
-            </div>
+            </Scroller>
 
             <template #footer> 
                 <Controls
                     :disabled="!info.open"
-                    :go-down-btn="y <= -120"
+                    :go-down-btn="(scroller?.y || 0) <= -180"
                     @send="onSend"
-                    @godown="y = 0"
+                    @godown="scroller?.toBottom()"
                 />
             </template>
         </StackLayout>
