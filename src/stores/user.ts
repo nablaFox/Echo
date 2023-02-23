@@ -66,6 +66,7 @@ export const useUser = defineStore('user', () => {
     }
 
     const loadMoreExRooms = (delta: number) => exRoomsLimit.value += delta
+    const setExRoomsLimit = (limit: number) => exRoomsLimit.value = limit
 
     const searchRoom = async () => {
         try {
@@ -108,6 +109,7 @@ export const useUser = defineStore('user', () => {
         remove,
         loadExRooms,
         loadMoreExRooms,
+        setExRoomsLimit,
         searchRoom,
         leaveRoom,
     }

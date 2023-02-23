@@ -29,7 +29,7 @@ const onUpdateName = (name: string) => room.update({ name: name })
 
 const onScroll = () => {
     (messagesLimit.value < (messages.value?.length as number) + 1)
-    && room.loadMore(80)
+    && room.loadMore(150)
 }
 </script>
 

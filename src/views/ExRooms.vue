@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue'
+import { ref, inject, computed, onBeforeMount, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUser } from '@/stores/user'
 
@@ -8,7 +8,7 @@ import Icon from '@/components/actions/Icon.vue'
 import RoomCard from '@/components/room/RoomCard.vue'
 
 const userStore = useUser()
-const { exRooms, roomInfo } = storeToRefs(userStore)
+const { exRooms, roomInfo, exRoomsLimit } = storeToRefs(userStore)
 
 const footer = inject('footer') as any
 const scroller = ref<InstanceType<typeof Scroller> | null>(null)
@@ -16,6 +16,14 @@ const desc = ref(true)
 const orderedRooms = computed(
     () => desc.value ? exRooms.value : exRooms.value.slice().reverse()
 )
+
+function onScroll() {
+    (exRoomsLimit.value < (exRooms.value?.length as number) + 1)
+    && userStore.loadMoreExRooms(100)
+}
+
+onBeforeMount(() => userStore.setExRoomsLimit(100))
+onBeforeUnmount(() => userStore.setExRoomsLimit(10))
 </script>
 
 <template>
@@ -43,6 +51,7 @@ const orderedRooms = computed(
             :bottom-offset="100"
             @scroll-top="footer.showFooter()"
             @scroll-bottom="footer.hideFooter()"
+            @arrived-bottom="onScroll"
         >
             <RoomCard
                 v-for="room, i in orderedRooms"
