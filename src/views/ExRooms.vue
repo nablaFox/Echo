@@ -1,28 +1,25 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, inject, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUser } from '@/stores/user'
 
+import Scroller from '@/layouts/Scroller.vue'
 import Icon from '@/components/actions/Icon.vue'
 import RoomCard from '@/components/room/RoomCard.vue'
-
-const desc = ref(true)
-const loaded = ref(true)
 
 const userStore = useUser()
 const { exRooms, roomInfo } = storeToRefs(userStore)
 
-function onFilter() {
-    const order = desc.value ? 'asc' : 'desc'
-    userStore.orderExRooms(order)
-    desc.value = !desc.value
-    loaded.value = false
-}
-
-watch(exRooms, () => (loaded.value = true))
+const footer = inject('footer') as any
+const scroller = ref<InstanceType<typeof Scroller> | null>(null)
+const desc = ref(true)
+const orderedRooms = computed(
+    () => desc.value ? exRooms.value : exRooms.value.slice().reverse()
+)
 </script>
 
 <template>
+
     <main>
         <div class="top">
             <div class="total"> 
@@ -30,37 +27,35 @@ watch(exRooms, () => (loaded.value = true))
             </div>
             <div 
                 class="filter"
-                @click="onFilter"
+                @click="desc = !desc"
             >
                 <span> 
                     {{ desc ? 'Recents' : 'Older' }} 
                 </span>
-                <Icon 
-                    :icon="desc ? 
-                        'arrow_drop_down' : 
-                        'arrow_drop_up'" 
-                />
+                <Icon :icon="desc ? 'arrow_drop_down' : 'arrow_drop_up'" />
             </div>
         </div>
 
-        <div
-            v-if="loaded"
+        <Scroller
+            ref="scroller"
             class="rooms"
+            keep-last-scroll
+            :bottom-offset="100"
+            @scroll-top="footer.showFooter()"
+            @scroll-bottom="footer.hideFooter()"
         >
             <RoomCard
-                v-for="room in exRooms"
+                v-for="room, i in orderedRooms"
+                :key="i"
                 :id="room.ref.id"
                 :name="room.ref.name"
                 :date="room.addedAt.toDate()"
                 :total-time="room.ref.info.totalTime"
                 :members="room.ref.info.group"
             />
-        </div>
-
-        <div v-else>
-            Loading...
-        </div>
+        </Scroller>
     </main>
+
 </template>
 
 
@@ -70,7 +65,7 @@ main {
     display: flex;
     flex-direction: column;
     padding: 18px 10px;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
     gap: 30px;
     overflow: hidden;
 
@@ -86,10 +81,11 @@ h5 { line-height: 1; }
 
 .rooms {
     display: flex;
+    overflow-y: auto;
     flex-direction: column;
-    overflow-y: scroll;
     flex: 1;
     gap: 20px;
-    @include hide-scrollbar()
+    @include hide-scrollbar();
+    padding-bottom: 20px;
 }
 </style>
