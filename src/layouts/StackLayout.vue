@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, provide, readonly } from 'vue'
 
 const props = defineProps<{
     padding?: string
@@ -18,6 +18,9 @@ const container = ref<HTMLElement | null>(null)
 const header = ref<HTMLElement | null>(null)
 const footer = ref<HTMLElement | null>(null)
 
+const footerVisible = ref(true)
+const headerVisible = ref(true)
+
 const headerFixed = computed(() => props.headerFixed === true)
 const footerFixed = computed(() => props.footerFixed === true)
 
@@ -27,17 +30,44 @@ const pagePadding = computed(() => {
     const paddingLeft = props.padding || style.paddingLeft
     const paddingRight = props.padding || style.paddingRight
 
-    const paddingTop = headerFixed.value ? 
-        header.value?.clientHeight + 'px' : '0px'
+    const paddingTop = headerFixed.value && headerVisible.value ? 
+        header.value?.clientHeight + 'px' : '0'
     
-    const paddingBottom = footerFixed.value ? 
-        footer.value?.offsetHeight + 'px': '0px'
-
+    const paddingBottom = footerFixed.value && footerVisible.value ? 
+        footer.value?.offsetHeight + 'px': '0'
 
     return `
         ${paddingTop} ${paddingRight}
         ${paddingBottom} ${paddingLeft}
     `
+})
+
+const showFooter = () => {
+    container.value!.style.transition = 'padding .4s ease' 
+    footerVisible.value = true
+    setTimeout(() => (container.value!.style.transition = ''), 400)
+}
+
+const hideFooter = () => (footerVisible.value = false)
+
+const showHeader = () => {
+    container.value!.style.transition = 'padding .4s ease' 
+    headerVisible.value = true
+    setTimeout(() => (container.value!.style.transition = ''), 400)
+}
+
+const hideHeader = () => (headerVisible.value = false)
+
+provide('footer', {
+    isVisible: readonly(footerVisible),
+    hideFooter,
+    showFooter
+})
+
+provide('header', {
+    isVisible: readonly(headerVisible),
+    hideHeader,
+    showHeader
 })
 </script>
 
@@ -53,29 +83,35 @@ const pagePadding = computed(() => {
             alignItems: align
         }"
     >
-        <header
-            ref="header"
-            :class="['header', headerFixed && 'fixed']"
-            :style="{ 
-                padding: headerPadding, 
-                height: headerHeight,
-            }"
-        >
-            <slot name="header" />
-        </header>
+        <Transition name="header">
+            <header
+                v-if="headerVisible"
+                ref="header"
+                :class="['header', headerFixed && 'fixed']"
+                :style="{ 
+                    padding: headerPadding, 
+                    height: headerHeight,
+                }"
+            >
+                <slot name="header" />
+            </header>
+        </Transition>
 
         <slot />
 
-        <footer
-            ref="footer"
-            :class="['footer', footerFixed && 'fixed']"
-            :style="{
-                padding: footerPadding,
-                height: footerHeight,
-            }"
-        >
-            <slot name="footer" />
-        </footer>
+        <Transition name="footer">
+            <footer
+                v-if="footerVisible"
+                ref="footer"
+                :class="['footer', footerFixed && 'fixed']"
+                :style="{
+                    padding: footerPadding,
+                    height: footerHeight,
+                }"
+            >
+                <slot name="footer" />
+            </footer>
+        </Transition>
     </div>
 
 </template>
@@ -90,6 +126,7 @@ const pagePadding = computed(() => {
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    will-change: padding;
 }
 
 .header {
@@ -112,5 +149,22 @@ const pagePadding = computed(() => {
         z-index: 9900;
         left: 0;
     }
+}
+
+.footer-enter-active,
+.footer-leave-active,
+.header-enter-active,
+.header-leave-active {
+    transition: transform .4s ease;
+}
+
+.footer-enter-from,
+.footer-leave-to {
+    transform: translateY(100%)
+}
+
+.header-enter-from,
+.header-leave-from {
+    transform: translateY(-100%)
 }
 </style>
