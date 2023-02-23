@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { onLongPress, onClickOutside } from '@vueuse/core'
 import { useFormat } from '@/composables/format'
-import { onLongPress } from '@vueuse/core'
-import { onClickOutside } from '@vueuse/core'
 import dayjs from 'dayjs'
 
 const props = defineProps<{
@@ -13,37 +12,30 @@ const props = defineProps<{
     menuDisabled: boolean,
     username: string
 }>()
+
 const emit = defineEmits<{
-    (e: 'update', text: string): void,
     (e: 'delete'): void
 }>()
 
 const format = useFormat()
 const container = ref<HTMLElement | null>(null)
-const content = ref<HTMLElement | null>(null)
-const isFromSender = computed(() => props.origin === 'sender')
-const edit = ref(false)
 const menu = ref(false)
 
-onLongPress(
-    container,
-    () => { isFromSender.value && !edit.value && !menu.value && (menu.value = true) },
-    { delay: 200 }
-)
-
-onClickOutside(container, () => {
-    menu.value = false
-    if (edit.value) {
-        emit('update', content.value!.innerText)
-        edit.value = false
-    }
-})
+const isFromSender = computed(() => props.origin === 'sender')
 
 const isDivider = computed(() => {
     const date = dayjs(props.date)
     if (!props.prevDate) { return true }
     return Math.round(date.diff(props.prevDate, 'day', true)) > 0
 })
+
+onLongPress(
+    container,
+    () => { isFromSender.value && !menu.value && (menu.value = true) },
+    { delay: 200 }
+)
+
+onClickOutside(container, () => (menu.value = false))
 
 function onDelete() {
     menu.value = false
@@ -60,13 +52,14 @@ function onDelete() {
         :style="{ zIndex: menu ? 2 : undefined }"
     >
         <div 
-            class="message" 
             ref="container"
+            class="message" 
             @touchend.prevent
         >
             <Transition>
-                <div class="menu" 
+                <div
                     v-if="menu && !menuDisabled"
+                    class="menu"
                 >
                     <div 
                         class="menu__item" 
@@ -76,14 +69,11 @@ function onDelete() {
                     </div>
                 </div>
             </Transition>
-            <div
-                ref="content"
-                class="message__content"
-                :contenteditable="isFromSender && edit"
-            >
+
+            <div class="message__content">
                 <div
-                    class="username" 
                     v-if="!isFromSender"
+                    class="username"
                 >
                    {{ username }}
                 </div>

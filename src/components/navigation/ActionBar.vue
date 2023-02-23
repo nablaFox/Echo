@@ -10,22 +10,13 @@ const route = useRoute()
 
 	<div class="action-bar">
 		<div class="product"> Echo </div>
-		<RouterLink 
-			v-if="route.name === 'Home'"
-			to="/profile"
-		>
+		<RouterLink to="/profile">
 			<img
 				class="profile"
 				:src="user?.photoURL || ''" 
 				referrerpolicy=“no-referrer”
 			>
 		</RouterLink>
-		<span
-			v-else
-			class="material-icons"
-		>
-			search
-		</span>
 	</div>
 	
 </template>
