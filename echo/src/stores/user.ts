@@ -70,7 +70,7 @@ export const useUser = defineStore('user', () => {
 
     const searchRoom = async () => {
         try {
-            const result = await fetch('https://echoend1-afinex04.b4a.run/hall', {
+            const result = await fetch('https://echo.icedcube.net/hall', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,9 +81,9 @@ export const useUser = defineStore('user', () => {
         } catch(err) { console.error('Failed to search room: ' + err)}
     }
 
-    const leaveRoom = async () => {
+    const leaveHall = async () => {
         try {
-            const result = await fetch(`https://echoend1-afinex04.b4a.run/rooms/${currentRoom.value.id}`, {
+            const result = await fetch('https://echo.icedcube.net/hall', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,7 +91,20 @@ export const useUser = defineStore('user', () => {
                 }
             })
             if (result.ok) return result
-        } catch(err) { console.error('Failed  to leave room: ' + err) }
+        } catch(err) { console.error('Failed to leave the Hall')}
+    }
+
+    const leaveRoom = async () => {
+        try {
+            const result = await fetch(`https://echo.icedcube.net/rooms/${currentRoom.value.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token.value,
+                }
+            })
+            if (result.ok) return result
+        } catch(err) { console.error('Failed  to leave the room: ' + err) }
     }
 
     return {
@@ -111,6 +124,7 @@ export const useUser = defineStore('user', () => {
         loadMoreExRooms,
         setExRoomsLimit,
         searchRoom,
-        leaveRoom,
+        leaveHall,
+        leaveRoom
     }
 })
