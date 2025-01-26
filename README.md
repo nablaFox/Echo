@@ -1,12 +1,12 @@
-# Echo 🎶
+# Echo
 
-> An innovative chatting app
+> "Echo," referring to the nymph from Greek mythology who had the power to repeat the words of others
 
-- Inspired by omegle, but better 💔
-- 100% anonymous 🌒
-- Self-centered: one chat at a time 🔒
-- Share music in real time 🔁
+## The concept
 
-"Echo," referring to the nymph from Greek mythology who had the power to repeat the words of others. 
+Press the main Echo button to enter a private room with another user. While in the room, you can only chat with that person; no one else.
+Once either participant leaves the room, the two users can never be matched together again.
+
+## Preview
 
 ![preview](https://github.com/nablaFox/Echo/blob/main/preview.jpg?raw=true)
